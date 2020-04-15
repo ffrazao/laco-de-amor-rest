@@ -8,9 +8,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>oauth</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>OAUTH2</name>
-	<description>Segurança do Sistema</description>
+	<description>Interface de Serviços de Segurança OAUTH2 do sistema</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -37,7 +37,6 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -46,5 +45,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
