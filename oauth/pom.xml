@@ -8,7 +8,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>oauth</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>OAUTH2</name>
 	<description>Interface de Serviços de Segurança OAUTH2 do sistema</description>
 	<dependencies>
@@ -52,6 +52,26 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>clean-jar-artifacts</id>
+						<phase>install</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<excludeDefaultDirectories>true</excludeDefaultDirectories>
+							<filesets>
+								<fileset>
+									<directory>target/dependency/*.jar</directory>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
