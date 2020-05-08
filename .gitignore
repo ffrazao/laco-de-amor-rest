@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### miscelania  ###
+**/.DS_Store
