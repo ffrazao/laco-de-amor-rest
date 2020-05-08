@@ -36,6 +36,16 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>servico</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>oauth</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

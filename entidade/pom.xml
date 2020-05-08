@@ -11,6 +11,18 @@
 	<packaging>jar</packaging>
 	<name>Entidades</name>
 	<description>Entidades do Sistema</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>dominio</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>

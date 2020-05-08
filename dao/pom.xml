@@ -16,6 +16,26 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>entidade</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>dominio</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>dto</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

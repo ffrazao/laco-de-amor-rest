@@ -11,6 +11,13 @@
 	<packaging>jar</packaging>
 	<name>Serviços</name>
 	<description>Serviços e Lógica do sistema</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>dao</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>

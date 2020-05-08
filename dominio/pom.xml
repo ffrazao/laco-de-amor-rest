@@ -11,6 +11,13 @@
 	<packaging>jar</packaging>
 	<name>Domínio</name>
 	<description>Domínio de Atributos de Entidades</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>

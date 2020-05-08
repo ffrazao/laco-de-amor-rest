@@ -11,6 +11,23 @@
 	<packaging>jar</packaging>
 	<name>DTO - Data Transfer Object</name>
 	<description>Data Transfer Object do projeto</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>entidade</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>dominio</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.frazao</groupId>
+			<artifactId>util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
