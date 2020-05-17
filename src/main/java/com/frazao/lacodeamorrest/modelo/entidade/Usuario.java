@@ -18,10 +18,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity(name = "Usuario")
-@Table(schema = "laco_de_amor", name = "usuario")
+@Table(name = "usuario")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Usuario extends EntidadeBaseTemId {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
