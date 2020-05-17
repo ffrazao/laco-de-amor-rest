@@ -3,17 +3,24 @@ package com.frazao.lacodeamorrest.config.seguranca;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
 
+import com.frazao.lacodeamorrest.bo.UsuarioBO;
+import com.frazao.lacodeamorrest.modelo.entidade.Usuario;
+
 @Component
 public class TokenEnhancerConfig implements TokenEnhancer {
 
 	public TokenEnhancerConfig() {
 	}
+	
+	@Autowired
+	private UsuarioBO bo;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -28,7 +35,11 @@ public class TokenEnhancerConfig implements TokenEnhancer {
 		if (userDetails != null) {
 			details = (Map<String, Object>) userDetails;
 		}
-		details.put("Teste", "Valor");
+		
+		Usuario usuario = this.bo.findByLogin(authentication.getUserAuthentication().getName());
+		
+		details.put("nome", "a implementar");
+		details.put("perfil", usuario.getPerfil());
 
 		tempResult.setAdditionalInformation(details);
 
