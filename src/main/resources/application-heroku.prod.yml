@@ -1,0 +1,14 @@
+spring: 
+  application:
+    name: Laço de Amor Servidor
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_a227050770a6656?reconnect=true
+    username: b32418a40fbb7d
+    password: 46a80a71
+ 
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
