@@ -8,4 +8,8 @@ public interface UsuarioDAO extends JpaRepository<Usuario, Integer> {
 
 	Usuario findByLogin(String valor);
 
+	Usuario findByEmail(String email);
+
+	Usuario findByEmailAndRecuperarSenhaToken(String email, String token);
+
 }

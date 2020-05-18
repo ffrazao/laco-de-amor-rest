@@ -32,7 +32,7 @@ public class RecursoServidor extends ResourceServerConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.anonymous().and()
 			.authorizeRequests()
-				.antMatchers("/usuario", "/primeiro-acesso", "/cadastrar-senha", "/login", "/logout", "/ping")
+				.antMatchers("/usuario/recuperar-senha", "/usuario/autorizar-trocar-senha", "/usuario/trocar-senha", "/ping")
 					.permitAll().and()
 //			.requestMatchers()
 //				.antMatchers("/**").and()

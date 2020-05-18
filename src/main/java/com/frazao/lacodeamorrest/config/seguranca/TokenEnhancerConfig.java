@@ -38,7 +38,7 @@ public class TokenEnhancerConfig implements TokenEnhancer {
 		
 		Usuario usuario = this.bo.findByLogin(authentication.getUserAuthentication().getName());
 		
-		details.put("nome", "a implementar");
+		details.put("nome", usuario.getLogin());
 		details.put("perfil", usuario.getPerfil());
 
 		tempResult.setAdditionalInformation(details);

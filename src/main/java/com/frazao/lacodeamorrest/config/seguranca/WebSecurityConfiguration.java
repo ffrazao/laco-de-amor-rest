@@ -48,7 +48,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.anonymous().and()
-			.authorizeRequests().antMatchers("/login", "/logout.do", "/usuario").permitAll()
+			.authorizeRequests().antMatchers("/usuario/recuperar-senha", "/usuario/autorizar-trocar-senha", "/usuario/trocar-senha").permitAll()
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.antMatchers("/**").authenticated()
 				.and().formLogin().loginProcessingUrl("/login.do").usernameParameter("username")

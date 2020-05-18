@@ -28,6 +28,12 @@ public class Usuario extends EntidadeBaseTemId {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Enumerated(EnumType.STRING)
+	private Confirmacao ativo;
+	
+	@Column(name = "email")
+	private String email;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -35,15 +41,20 @@ public class Usuario extends EntidadeBaseTemId {
 	@Column(name = "login")
 	private String login;
 	
-	@JsonIgnore
-	private String senha;
-	
 	@Enumerated(EnumType.STRING)
 	private Perfil perfil;
 	
+	@Column(name = "recuperar_senha_expira")
+	@JsonIgnore
+	private Long recuperarSenhaExpira;
+	
+	@Column(name = "recuperar_senha_token")
+	@JsonIgnore
+	private String recuperarSenhaToken;
+	
 //	private Pessoa pessoa;
 	
-	@Enumerated(EnumType.STRING)
-	private Confirmacao ativo;
+	@JsonIgnore
+	private String senha;
 
 }
