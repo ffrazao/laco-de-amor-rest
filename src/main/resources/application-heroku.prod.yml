@@ -1,13 +1,28 @@
-spring: 
-  application:
-    name: Laço de Amor Servidor
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+spring:
+# BANCO DE DADOS
   datasource:
     url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_a227050770a6656?reconnect=true
     username: b32418a40fbb7d
     password: 46a80a71
- 
+# E-MAIL
+  mail:
+    host: smtp.gmail.com
+    username: lacodeamordf@gmail.com
+    #password: Laco-de-amor2020
+    password: fuxpykfclldpxzdb
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+          starttls:
+            enable: true
+          ssl:
+            enable: true
+# LOG
 logging:
   level:
     org.springframework.web: DEBUG
