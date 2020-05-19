@@ -12,13 +12,14 @@ import com.frazao.lacodeamorrest.bo.UsuarioBO;
 import com.frazao.lacodeamorrest.modelo.dto.AutorizarTrocarSenhaDTO;
 import com.frazao.lacodeamorrest.modelo.dto.RecuperarSenhaDTO;
 import com.frazao.lacodeamorrest.modelo.dto.TrocarSenhaDTO;
+import com.frazao.lacodeamorrest.modelo.dto.UsuarioFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.Usuario;
 
 @RestController
 @RequestMapping(value = "usuario")
-public class UsuarioRest extends CrudRest<Usuario, Integer, UsuarioBO> {
+public class UsuarioCRUDREST extends CRUDREST<Usuario, Integer, UsuarioFiltroDTO, UsuarioBO> {
 
-	public UsuarioRest(@Autowired UsuarioBO bo) {
+	public UsuarioCRUDREST(@Autowired UsuarioBO bo) {
 		super(bo);
 	}
 

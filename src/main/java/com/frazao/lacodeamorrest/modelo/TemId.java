@@ -1,9 +1,9 @@
 package com.frazao.lacodeamorrest.modelo;
 
-public interface TemId<T> {
+public interface TemId<Id> {
 
-	T getId();
+	Id getId();
 	
-	void setId(T valor);
+	void setId(Id id);
 	
 }

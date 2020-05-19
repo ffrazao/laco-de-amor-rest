@@ -1,7 +1,9 @@
 package com.frazao.lacodeamorrest.config.seguranca;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.frazao.lacodeamorrest.bo.UsuarioBO;
 import com.frazao.lacodeamorrest.modelo.dominio.Confirmacao;
@@ -32,8 +35,11 @@ public class JdbcUserDetails implements UserDetailsService {
 		}
 
 		List<GrantedAuthority> perfilList = new ArrayList<>();
-		//perfilList.add(new SimpleGrantedAuthority(""));
-		perfilList.add(new SimpleGrantedAuthority(usuario.getPerfil().getDescricao()));
+		// perfilList.add(new SimpleGrantedAuthority(""));
+		if (usuario.getPerfil() != null) {
+			perfilList.addAll(Arrays.asList(usuario.getPerfil().split(",")).stream()
+					.map(p -> new SimpleGrantedAuthority(p.trim().toUpperCase())).collect(Collectors.toList()));
+		}
 
 		User user = new User(username, usuario.getSenha(), Confirmacao.S.equals(usuario.getAtivo()), true, true, true,
 				perfilList);
@@ -41,9 +47,7 @@ public class JdbcUserDetails implements UserDetailsService {
 	}
 
 	public static void main(String[] args) {
-		org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder e = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder(
-				4);
-
+		BCryptPasswordEncoder e = new BCryptPasswordEncoder(4);
 		System.out.println(e.encode(new String("laco-de-amor")));
 		System.out.println(e.encode(new String("a")));
 	}

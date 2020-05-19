@@ -12,6 +12,8 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class TrocarSenhaDTO extends AutorizarTrocarSenhaDTO {
+	
+	private static final long serialVersionUID = 1L;
 
 	@NotBlank
 	private String senha;

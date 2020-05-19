@@ -1,5 +1,7 @@
 package com.frazao.lacodeamorrest.modelo.dto;
 
-public interface DTO {
+import java.io.Serializable;
+
+public interface DTO extends Serializable {
 
 }

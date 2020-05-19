@@ -18,11 +18,12 @@ import com.frazao.lacodeamorrest.dao.UsuarioDAO;
 import com.frazao.lacodeamorrest.modelo.dto.AutorizarTrocarSenhaDTO;
 import com.frazao.lacodeamorrest.modelo.dto.RecuperarSenhaDTO;
 import com.frazao.lacodeamorrest.modelo.dto.TrocarSenhaDTO;
+import com.frazao.lacodeamorrest.modelo.dto.UsuarioFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.Usuario;
 import com.frazao.lacodeamorrest.util.email.EmailService;
 
 @Service
-public class UsuarioBO extends CRUDBO<Usuario, Integer> {
+public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UsuarioBO.class);
 

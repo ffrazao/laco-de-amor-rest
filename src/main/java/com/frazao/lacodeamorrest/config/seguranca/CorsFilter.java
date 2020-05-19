@@ -32,10 +32,10 @@ public class CorsFilter implements Filter {
 
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
-//		response.setHeader("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, POST, PUT"); 
+		response.setHeader("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, POST, PUT"); 
 //		response.setHeader("Access-Control-Allow-Methods", "*"); 
 		response.setHeader("Access-Control-Max-Age", "3600");
-		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Key, Authorization");
+		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Key, Authorization, access-control-allow-origin, access-control-allow-methods");
 //		response.setHeader("Access-Control-Allow-Headers", "*");
 
 		// se for Options concluir a requisição e interromper o filter chain

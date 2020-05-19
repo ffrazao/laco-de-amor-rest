@@ -16,7 +16,9 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class AutorizarTrocarSenhaDTO extends RecuperarSenhaDTO implements MensagemEmail {
-	
+
+	private static final long serialVersionUID = 1L;
+
 	@NotBlank
 	private String token;
 

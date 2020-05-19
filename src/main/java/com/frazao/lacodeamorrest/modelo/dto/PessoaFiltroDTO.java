@@ -1,6 +1,4 @@
-package com.frazao.lacodeamorrest.modelo;
-
-import java.io.Serializable;
+package com.frazao.lacodeamorrest.modelo.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,8 +9,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public abstract class EntidadeBase implements Serializable {
+public class PessoaFiltroDTO implements FiltroDTO {
 
 	private static final long serialVersionUID = 1L;
+	
+	private String nome;
+	
+	private String cpfCnpj;
 
 }

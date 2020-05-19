@@ -14,6 +14,8 @@ import lombok.ToString;
 @ToString
 public class RecuperarSenhaDTO implements DTO {
 
+	private static final long serialVersionUID = 1L;
+	
 	@NotBlank
 	private String email;
 	

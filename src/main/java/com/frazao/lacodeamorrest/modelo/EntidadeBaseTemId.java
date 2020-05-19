@@ -1,11 +1,15 @@
 package com.frazao.lacodeamorrest.modelo;
 
-import java.io.Serializable;
-
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@EqualsAndHashCode(callSuper = false)
-public abstract class EntidadeBaseTemId extends EntidadeBase implements Serializable, TemId<Integer> {
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public abstract class EntidadeBaseTemId<Id> extends EntidadeBase implements TemId<Id> {
 
 	private static final long serialVersionUID = 1L;
 	

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.frazao.lacodeamorrest.modelo.dto.FiltroDTO;
 
-public class CRUDBO<T, Id> implements BO {
+public class CRUDBO<T, Id, F extends FiltroDTO> implements BO {
 
 	private JpaRepository<T, Id> dao;
 
@@ -29,7 +29,7 @@ public class CRUDBO<T, Id> implements BO {
 		this.getDAO().delete(result);
 	}
 
-	public List<T> filter(FiltroDTO filtro) {
+	public List<T> filter(F filtro) {
 		List<T> result = this.getDAO().findAll();
 		return result;
 	}
