@@ -1,4 +1,9 @@
-package com.frazao.lacodeamorrest.modelo.dto;
+package com.frazao.lacodeamorrest.modelo.dto.laco_de_amor;
+
+import java.util.Set;
+
+import com.frazao.lacodeamorrest.modelo.dominio.PessoaTipo;
+import com.frazao.lacodeamorrest.modelo.dto.FiltroDTO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,5 +21,7 @@ public class PessoaFiltroDTO implements FiltroDTO {
 	private String nome;
 	
 	private String cpfCnpj;
+	
+	private Set<PessoaTipo> tipo;
 
 }

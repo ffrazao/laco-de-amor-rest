@@ -1,4 +1,4 @@
-package com.frazao.lacodeamorrest.modelo;
+package com.frazao.lacodeamorrest.modelo.entidade;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.frazao.lacodeamorrest.modelo.dto;
+package com.frazao.lacodeamorrest.modelo.dto.laco_de_amor;
 
 import javax.validation.constraints.NotBlank;
 

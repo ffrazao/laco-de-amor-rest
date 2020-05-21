@@ -14,9 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.frazao.lacodeamorrest.bo.UsuarioBO;
+import com.frazao.lacodeamorrest.bo.laco_de_amor.UsuarioBO;
 import com.frazao.lacodeamorrest.modelo.dominio.Confirmacao;
-import com.frazao.lacodeamorrest.modelo.entidade.Usuario;
+import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Usuario;
 
 /**
  * Created by Frazão

@@ -1,4 +1,4 @@
-package com.frazao.lacodeamorrest.bo;
+package com.frazao.lacodeamorrest.bo.laco_de_amor;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,12 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.frazao.lacodeamorrest.dao.UsuarioDAO;
-import com.frazao.lacodeamorrest.modelo.dto.AutorizarTrocarSenhaDTO;
-import com.frazao.lacodeamorrest.modelo.dto.RecuperarSenhaDTO;
-import com.frazao.lacodeamorrest.modelo.dto.TrocarSenhaDTO;
-import com.frazao.lacodeamorrest.modelo.dto.UsuarioFiltroDTO;
-import com.frazao.lacodeamorrest.modelo.entidade.Usuario;
+import com.frazao.lacodeamorrest.bo.BoException;
+import com.frazao.lacodeamorrest.bo.CRUDBO;
+import com.frazao.lacodeamorrest.bo.RecursoNaoEncontradoBoException;
+import com.frazao.lacodeamorrest.dao.laco_de_amor.UsuarioDAO;
+import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.AutorizarTrocarSenhaDTO;
+import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.RecuperarSenhaDTO;
+import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.TrocarSenhaDTO;
+import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.UsuarioFiltroDTO;
+import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Usuario;
 import com.frazao.lacodeamorrest.util.email.EmailService;
 
 @Service

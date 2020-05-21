@@ -11,6 +11,12 @@ spring:
 # BANCO DE DADOS
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/laco_de_amor
     username: root
@@ -21,6 +27,11 @@ logging:
   level:
     org.springframework.web: TRACE
     org.springframework.security: TRACE
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.transaction: DEBUG
+    org.springframework.transaction.interceptor: TRACE
+    org.springframework.jdbc: DEBUG
+    org.hibernate.SQL: DEBUG
     
 # E-MAIL
 default:

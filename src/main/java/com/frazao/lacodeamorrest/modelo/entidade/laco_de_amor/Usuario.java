@@ -1,4 +1,4 @@
-package com.frazao.lacodeamorrest.modelo.entidade;
+package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
 import java.util.Optional;
 
@@ -15,8 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.frazao.lacodeamorrest.modelo.EntidadeBaseTemId;
 import com.frazao.lacodeamorrest.modelo.dominio.Confirmacao;
+import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

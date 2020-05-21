@@ -10,8 +10,8 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
 
-import com.frazao.lacodeamorrest.bo.UsuarioBO;
-import com.frazao.lacodeamorrest.modelo.entidade.Usuario;
+import com.frazao.lacodeamorrest.bo.laco_de_amor.UsuarioBO;
+import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Usuario;
 
 @Component
 public class TokenEnhancerConfig implements TokenEnhancer {

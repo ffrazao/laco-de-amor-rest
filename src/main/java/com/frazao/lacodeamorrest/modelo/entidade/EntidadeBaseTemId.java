@@ -1,4 +1,4 @@
-package com.frazao.lacodeamorrest.modelo;
+package com.frazao.lacodeamorrest.modelo.entidade;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

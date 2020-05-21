@@ -1,8 +1,8 @@
-package com.frazao.lacodeamorrest.modelo.dominio;
+package com.frazao.lacodeamorrest.modelo.dominio.laco_de_amor;
 
 public enum Perfil {
 
-	Admin("Administrador"), Parceiro("Parceiro"), Cliente("Cliente");
+	Admin("Administrador"), Cliente("Cliente"), Parceiro("Parceiro");
 	
 	private String descricao;
 	

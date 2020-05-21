@@ -1,4 +1,4 @@
-package com.frazao.lacodeamorrest.rest;
+package com.frazao.lacodeamorrest.rest.laco_de_amor;
 
 import javax.validation.Valid;
 
@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.frazao.lacodeamorrest.bo.UsuarioBO;
-import com.frazao.lacodeamorrest.modelo.dto.AutorizarTrocarSenhaDTO;
-import com.frazao.lacodeamorrest.modelo.dto.RecuperarSenhaDTO;
-import com.frazao.lacodeamorrest.modelo.dto.TrocarSenhaDTO;
-import com.frazao.lacodeamorrest.modelo.dto.UsuarioFiltroDTO;
-import com.frazao.lacodeamorrest.modelo.entidade.Usuario;
+import com.frazao.lacodeamorrest.bo.laco_de_amor.UsuarioBO;
+import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.AutorizarTrocarSenhaDTO;
+import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.RecuperarSenhaDTO;
+import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.TrocarSenhaDTO;
+import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.UsuarioFiltroDTO;
+import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Usuario;
+import com.frazao.lacodeamorrest.rest.CRUDREST;
 
 @RestController
 @RequestMapping(value = "usuario")
@@ -36,6 +37,11 @@ public class UsuarioCRUDREST extends CRUDREST<Usuario, Integer, UsuarioFiltroDTO
 	@PostMapping("trocar-senha")
 	public void trocarSenha(@Valid @RequestBody TrocarSenhaDTO valor) throws Exception {
 		this.getBO().trocarSenha(valor);
+	}
+
+	@Override
+	public Usuario novo(Usuario modelo) throws Exception {
+		return modelo == null ? new Usuario() : modelo;
 	}
 
 }
