@@ -16,28 +16,29 @@ import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Usuario;
 @Component
 public class TokenEnhancerConfig implements TokenEnhancer {
 
-	public TokenEnhancerConfig() {
-	}
-	
 	@Autowired
 	private UsuarioBO bo;
 
+	public TokenEnhancerConfig() {
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-		DefaultOAuth2AccessToken tempResult = (DefaultOAuth2AccessToken) accessToken;
+	public OAuth2AccessToken enhance(final OAuth2AccessToken accessToken, final OAuth2Authentication authentication) {
+		final DefaultOAuth2AccessToken tempResult = (DefaultOAuth2AccessToken) accessToken;
 
 		Map<String, Object> details = new HashMap<>();
 		Object userDetails = null;
-		if (authentication.getUserAuthentication() != null && authentication.getUserAuthentication().getDetails() != null) {
+		if (authentication.getUserAuthentication() != null
+				&& authentication.getUserAuthentication().getDetails() != null) {
 			userDetails = authentication.getUserAuthentication().getDetails();
 		}
 		if (userDetails != null) {
 			details = (Map<String, Object>) userDetails;
 		}
-		
-		Usuario usuario = this.bo.findByLogin(authentication.getUserAuthentication().getName());
-		
+
+		final Usuario usuario = this.bo.findByLogin(authentication.getUserAuthentication().getName());
+
 		details.put("nome", usuario.getPessoa().isPresent() ? usuario.getPessoa().get().getNome() : usuario.getLogin());
 		details.put("foto", usuario.getFoto());
 		details.put("email", usuario.getEmail());

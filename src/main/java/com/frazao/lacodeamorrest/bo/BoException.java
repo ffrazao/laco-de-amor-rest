@@ -8,7 +8,7 @@ public class BoException extends Exception {
 		super();
 	}
 
-	public BoException(String message) {
+	public BoException(final String message) {
 		super(message);
 	}
 

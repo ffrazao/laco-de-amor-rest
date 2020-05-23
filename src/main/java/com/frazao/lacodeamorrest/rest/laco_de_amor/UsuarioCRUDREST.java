@@ -20,28 +20,23 @@ import com.frazao.lacodeamorrest.rest.CRUDREST;
 @RequestMapping(value = "usuario")
 public class UsuarioCRUDREST extends CRUDREST<Usuario, Integer, UsuarioFiltroDTO, UsuarioBO> {
 
-	public UsuarioCRUDREST(@Autowired UsuarioBO bo) {
+	public UsuarioCRUDREST(@Autowired final UsuarioBO bo) {
 		super(bo);
 	}
 
-	@PostMapping("recuperar-senha")
-	public void recuperarSenha(@Valid @RequestBody RecuperarSenhaDTO valor) throws Exception {
-		this.getBO().recuperarSenha(valor);
-	}
-
 	@PostMapping("autorizar-trocar-senha")
-	public void autorizarTrocarSenha(@Valid @RequestBody AutorizarTrocarSenhaDTO valor) throws Exception {
+	public void autorizarTrocarSenha(@Valid @RequestBody final AutorizarTrocarSenhaDTO valor) throws Exception {
 		this.getBO().autorizarTrocarSenha(valor);
 	}
 
-	@PostMapping("trocar-senha")
-	public void trocarSenha(@Valid @RequestBody TrocarSenhaDTO valor) throws Exception {
-		this.getBO().trocarSenha(valor);
+	@PostMapping("recuperar-senha")
+	public void recuperarSenha(@Valid @RequestBody final RecuperarSenhaDTO valor) throws Exception {
+		this.getBO().recuperarSenha(valor);
 	}
 
-	@Override
-	public Usuario novo(Usuario modelo) throws Exception {
-		return modelo == null ? new Usuario() : modelo;
+	@PostMapping("trocar-senha")
+	public void trocarSenha(@Valid @RequestBody final TrocarSenhaDTO valor) throws Exception {
+		this.getBO().trocarSenha(valor);
 	}
 
 }

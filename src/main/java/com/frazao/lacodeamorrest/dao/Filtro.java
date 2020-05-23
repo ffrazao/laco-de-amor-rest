@@ -7,17 +7,17 @@ import com.frazao.lacodeamorrest.modelo.dto.FiltroDTO;
 
 public interface Filtro<T, F extends FiltroDTO> {
 
-	default String adWhere(StringBuilder where) {
+	default String adWhere(final StringBuilder where) {
 		return where.length() == 0 ? "WHERE  " : "AND    ";
 	}
 
 	Collection<T> filtrar(F f);
 
-	default String in(Collection<?> itens) {
+	default String in(final Collection<?> itens) {
 		return String.format("(%s)", itens.stream().map(i -> " ?").collect(Collectors.joining(",")).trim());
 	}
 
-	default String like(String arg) {
+	default String like(final String arg) {
 		return String.format("%%%s%%", arg.replaceAll(" ", "%"));
 	}
 }

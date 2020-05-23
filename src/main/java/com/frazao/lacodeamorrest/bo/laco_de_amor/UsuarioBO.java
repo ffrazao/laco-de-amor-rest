@@ -36,14 +36,14 @@ public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public UsuarioBO(@Autowired UsuarioDAO dao) {
-		super(dao);
+	public UsuarioBO(@Autowired final UsuarioDAO dao) {
+		super(Usuario.class, dao);
 	}
 
-	public void autorizarTrocarSenha(@Valid AutorizarTrocarSenhaDTO valor) throws Exception {
-		LOG.debug("Autorizando troca de senha para [%s]", valor);
+	public void autorizarTrocarSenha(@Valid final AutorizarTrocarSenhaDTO valor) throws Exception {
+		UsuarioBO.LOG.debug("Autorizando troca de senha para [%s]", valor);
 
-		Usuario usuario = this.getDAO().findByEmail(valor.getEmail());
+		final Usuario usuario = this.getDAO().findByEmail(valor.getEmail());
 		if (usuario == null) {
 			throw new RecursoNaoEncontradoBoException("Email não cadastrado");
 		}
@@ -57,8 +57,8 @@ public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
 			throw new BoException("Token inválido!");
 		}
 
-		Calendar hojeCl = Calendar.getInstance();
-		Calendar expiraCl = Calendar.getInstance();
+		final Calendar hojeCl = Calendar.getInstance();
+		final Calendar expiraCl = Calendar.getInstance();
 
 		hojeCl.setTime(new Date());
 		expiraCl.setTimeInMillis(usuario.getRecuperarSenhaExpira());
@@ -68,38 +68,39 @@ public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
 
 		}
 
-		LOG.debug("Troca de senha para [%s] autorizada", valor);
+		UsuarioBO.LOG.debug("Troca de senha para [%s] autorizada", valor);
 	}
 
-	public Usuario findByLogin(String valor) {
+	public Usuario findByLogin(final String valor) {
 		return this.getDAO().findByLogin(valor);
 	}
 
+	@Override
 	public UsuarioDAO getDAO() {
 		return (UsuarioDAO) super.getDAO();
 	}
 
 	@Transactional
-	public void recuperarSenha(@Valid RecuperarSenhaDTO valor) throws Exception {
+	public void recuperarSenha(@Valid final RecuperarSenhaDTO valor) throws Exception {
 
-		LOG.debug("Início recuperação de senha para [%s]", valor);
+		UsuarioBO.LOG.debug("Início recuperação de senha para [%s]", valor);
 
-		Usuario usuario = this.getDAO().findByEmail(valor.getEmail());
+		final Usuario usuario = this.getDAO().findByEmail(valor.getEmail());
 		if (usuario == null) {
 			throw new RecursoNaoEncontradoBoException("Email não cadastrado");
 		}
 		String token = usuario.getRecuperarSenhaToken();
 		Long expira = usuario.getRecuperarSenhaExpira();
 
-		Calendar hojeCl = Calendar.getInstance();
-		Calendar expiraCl = Calendar.getInstance();
+		final Calendar hojeCl = Calendar.getInstance();
+		final Calendar expiraCl = Calendar.getInstance();
 
 		hojeCl.setTime(new Date());
 
 		if (expira != null && expira > 0) {
 			expiraCl.setTimeInMillis(expira);
 			if (hojeCl.after(expiraCl)) {
-				LOG.debug("Token para [%s] expirado, gerando novo token", valor);
+				UsuarioBO.LOG.debug("Token para [%s] expirado, gerando novo token", valor);
 				token = null;
 				expira = null;
 			}
@@ -110,7 +111,7 @@ public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
 			token = String.format("%06d", new Random().nextInt(999999));
 			hojeCl.add(Calendar.MINUTE, 20);
 			expira = hojeCl.getTimeInMillis();
-			LOG.debug("Token para [%s] gerado. Novo token => [%s] - expira em [%s]", valor, token,
+			UsuarioBO.LOG.debug("Token para [%s] gerado. Novo token => [%s] - expira em [%s]", valor, token,
 					new SimpleDateFormat("dd/MM/yyyy hh:mm:ss:SSS").format(hojeCl.getTime()));
 		}
 
@@ -124,20 +125,20 @@ public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
 	}
 
 	@Transactional
-	public void trocarSenha(@Valid TrocarSenhaDTO valor) throws Exception {
-		LOG.debug("Trocando a senha para [%s]", valor.getEmail());
-		this.autorizarTrocarSenha((AutorizarTrocarSenhaDTO) valor);
+	public void trocarSenha(@Valid final TrocarSenhaDTO valor) throws Exception {
+		UsuarioBO.LOG.debug("Trocando a senha para [%s]", valor.getEmail());
+		this.autorizarTrocarSenha(valor);
 
-		LOG.debug("Trocando a senha!");
+		UsuarioBO.LOG.debug("Trocando a senha!");
 
-		Usuario usuario = this.getDAO().findByEmailAndRecuperarSenhaToken(valor.getEmail(), valor.getToken());
+		final Usuario usuario = this.getDAO().findByEmailAndRecuperarSenhaToken(valor.getEmail(), valor.getToken());
 
-		usuario.setSenha(passwordEncoder.encode(valor.getSenha()));
+		usuario.setSenha(this.passwordEncoder.encode(valor.getSenha()));
 		usuario.setRecuperarSenhaToken(null);
 		usuario.setRecuperarSenhaExpira(null);
 
 		this.getDAO().save(usuario);
-		LOG.debug("Senha para [%s] trocada!", valor.getEmail());
+		UsuarioBO.LOG.debug("Senha para [%s] trocada!", valor.getEmail());
 
 	}
 

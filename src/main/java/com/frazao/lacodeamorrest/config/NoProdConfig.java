@@ -10,10 +10,10 @@ import com.frazao.lacodeamorrest.util.email.MockEmailService;
 @Configuration
 @Profile("!heroku.prod")
 public class NoProdConfig {
-	
+
 	@Bean
 	public EmailService instantiateEmailService() {
 		return new MockEmailService();
 	}
-	
+
 }

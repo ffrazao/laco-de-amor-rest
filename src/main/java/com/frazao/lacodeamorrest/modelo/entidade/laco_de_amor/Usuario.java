@@ -21,14 +21,13 @@ import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity(name = "Usuario")
 @Table(name = "usuario")
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString
+
 public class Usuario extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -39,6 +38,10 @@ public class Usuario extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "email")
 	private String email;
+
+	@Lob
+	@Column(name = "foto")
+	private byte[] foto;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,10 +57,6 @@ public class Usuario extends EntidadeBaseTemId<Integer> {
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
-	
-	@Lob
-	@Column(name = "foto")
-	private byte[] foto;
 
 	@JsonIgnore
 	@Column(name = "recuperar_senha_expira")
@@ -70,7 +69,7 @@ public class Usuario extends EntidadeBaseTemId<Integer> {
 	@JsonIgnore
 	@Column(name = "senha")
 	private String senha;
-	
+
 	public Optional<Pessoa> getPessoa() {
 		return Optional.ofNullable(this.pessoa);
 	}

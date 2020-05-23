@@ -1,22 +1,22 @@
 package com.frazao.lacodeamorrest.modelo.dominio.laco_de_amor;
 
-public enum Perfil {
+public enum PessoaTipo {
 
-	Admin("Administrador"), Cliente("Cliente"), Parceiro("Parceiro");
-	
+	PF("Pessoa Física"), PJ("Pessoa Jurídica");
+
 	private String descricao;
-	
-	private Perfil(String descricao) {
+
+	private PessoaTipo(final String descricao) {
 		this.descricao = descricao;
 	}
-	
+
 	public String getDescricao() {
 		return this.descricao;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.getDescricao();
 	}
-	
+
 }

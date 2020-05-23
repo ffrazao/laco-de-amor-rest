@@ -21,38 +21,39 @@ public class UsuarioDAOFiltroImpl implements UsuarioDAOFiltro {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Usuario> filtrar(UsuarioFiltroDTO f) {
-		StringBuilder sql = new StringBuilder();
+	public Collection<Usuario> filtrar(final UsuarioFiltroDTO f) {
+		final StringBuilder sql = new StringBuilder();
 		sql.append("SELECT em.*").append("\n");
 		sql.append("FROM   laco_de_amor.usuario as em").append("\n");
 
-		StringBuilder arg = new StringBuilder();
+		final StringBuilder arg = new StringBuilder();
 		if (StringUtils.isNotBlank(f.getLogin())) {
-			arg.append(adWhere(arg)).append("em.login like :login").append("\n");
+			arg.append(this.adWhere(arg)).append("em.login like :login").append("\n");
 		}
 		if (StringUtils.isNotBlank(f.getEmail())) {
-			arg.append(adWhere(arg)).append("em.email like :email").append("\n");
+			arg.append(this.adWhere(arg)).append("em.email like :email").append("\n");
 		}
 		if (ObjectUtils.isNotEmpty(f.getPerfil())) {
-			arg.append(adWhere(arg)).append("em.perfil = :perfil").append("\n");
+			arg.append(this.adWhere(arg)).append("em.perfil = :perfil").append("\n");
 		}
 		if (ObjectUtils.isNotEmpty(f.getAtivo())) {
-			arg.append(adWhere(arg)).append("em.ativo = :ativo").append("\n");
+			arg.append(this.adWhere(arg)).append("em.ativo = :ativo").append("\n");
 		}
 
 		sql.append(arg);
 		sql.append("ORDER BY em.login").append("\n");
 
-		Query query = entityManager.createNativeQuery(sql.toString(), Usuario.class);
+		final Query query = this.entityManager.createNativeQuery(sql.toString(), Usuario.class);
 
 		if (StringUtils.isNotBlank(f.getLogin())) {
-			query.setParameter("login", like(f.getLogin()));
+			query.setParameter("login", this.like(f.getLogin()));
 		}
 		if (StringUtils.isNotBlank(f.getEmail())) {
-			query.setParameter("email", like(f.getEmail()));
+			query.setParameter("email", this.like(f.getEmail()));
 		}
 		if (ObjectUtils.isNotEmpty(f.getPerfil())) {
-			query.setParameter("perfil", f.getPerfil().stream().sorted().map(v -> v.name()).collect(Collectors.joining(",")));
+			query.setParameter("perfil",
+					f.getPerfil().stream().sorted().map(v -> v.name()).collect(Collectors.joining(",")));
 		}
 		if (ObjectUtils.isNotEmpty(f.getAtivo())) {
 			query.setParameter("ativo", f.getAtivo().name());

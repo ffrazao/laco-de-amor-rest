@@ -23,33 +23,33 @@ import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Usuario;
  */
 public class JdbcUserDetails implements UserDetailsService {
 
+	public static void main(final String[] args) {
+		final BCryptPasswordEncoder e = new BCryptPasswordEncoder(4);
+		System.out.println(e.encode(new String("laco-de-amor")));
+		System.out.println(e.encode(new String("a")));
+	}
+
 	@Autowired
 	private UsuarioBO bo;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario usuario = bo.findByLogin(username);
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+		final Usuario usuario = this.bo.findByLogin(username);
 
 		if (usuario == null) {
 			throw new UsernameNotFoundException("Usuário " + username + " não encontrado");
 		}
 
-		List<GrantedAuthority> perfilList = new ArrayList<>();
+		final List<GrantedAuthority> perfilList = new ArrayList<>();
 		// perfilList.add(new SimpleGrantedAuthority(""));
 		if (usuario.getPerfil() != null) {
 			perfilList.addAll(Arrays.asList(usuario.getPerfil().split(",")).stream()
 					.map(p -> new SimpleGrantedAuthority(p.trim().toUpperCase())).collect(Collectors.toList()));
 		}
 
-		User user = new User(username, usuario.getSenha(), Confirmacao.S.equals(usuario.getAtivo()), true, true, true,
-				perfilList);
+		final User user = new User(username, usuario.getSenha(), Confirmacao.S.equals(usuario.getAtivo()), true, true,
+				true, perfilList);
 		return user;
-	}
-
-	public static void main(String[] args) {
-		BCryptPasswordEncoder e = new BCryptPasswordEncoder(4);
-		System.out.println(e.encode(new String("laco-de-amor")));
-		System.out.println(e.encode(new String("a")));
 	}
 
 }

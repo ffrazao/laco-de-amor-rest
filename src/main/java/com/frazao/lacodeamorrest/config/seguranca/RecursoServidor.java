@@ -23,25 +23,22 @@ public class RecursoServidor extends ResourceServerConfigurerAdapter {
 	private DataSource datasource;
 
 	@Override
-	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-		TokenStore tokenStore = new JdbcTokenStore(datasource);
-		resources.resourceId("laco-de-amor.api").tokenStore(tokenStore);
-	}
-
-	@Override
-	public void configure(HttpSecurity http) throws Exception {
-		http.anonymous().and()
-			.authorizeRequests()
-				.antMatchers("/usuario/recuperar-senha", "/usuario/autorizar-trocar-senha", "/usuario/trocar-senha", "/ping")
-					.permitAll().and()
+	public void configure(final HttpSecurity http) throws Exception {
+		http.anonymous().and().authorizeRequests().antMatchers("/usuario/recuperar-senha",
+				"/usuario/autorizar-trocar-senha", "/usuario/trocar-senha", "/ping").permitAll().and()
 //			.requestMatchers()
 //				.antMatchers("/**").and()
-			.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('read')")
+				.authorizeRequests().antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('read')")
 				.antMatchers(HttpMethod.POST, "/**").access("#oauth2.hasScope('write')")
 				.antMatchers(HttpMethod.PATCH, "/**").access("#oauth2.hasScope('write')")
 				.antMatchers(HttpMethod.PUT, "/**").access("#oauth2.hasScope('write')")
 				.antMatchers(HttpMethod.DELETE, "/**").access("#oauth2.hasScope('write')");
+	}
+
+	@Override
+	public void configure(final ResourceServerSecurityConfigurer resources) throws Exception {
+		final TokenStore tokenStore = new JdbcTokenStore(this.datasource);
+		resources.resourceId("laco-de-amor.api").tokenStore(tokenStore);
 	}
 
 }

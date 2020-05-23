@@ -1,6 +1,5 @@
 package com.frazao.lacodeamorrest.util.email;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,10 @@ public class SmtpEmailService extends AbstractEmailService {
 	private MailSender mailSender;
 
 	@Override
-	public void sendMail(SimpleMailMessage msg) {
-		LOG.info("Enviando email....");
+	public void sendMail(final SimpleMailMessage msg) {
+		SmtpEmailService.LOG.info("Enviando email....");
 		this.mailSender.send(msg);
-		LOG.info("E-mail enviado.");
+		SmtpEmailService.LOG.info("E-mail enviado.");
 	}
-	
+
 }

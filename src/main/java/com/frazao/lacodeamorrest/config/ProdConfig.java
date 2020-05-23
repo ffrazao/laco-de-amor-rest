@@ -10,10 +10,10 @@ import com.frazao.lacodeamorrest.util.email.SmtpEmailService;
 @Configuration
 @Profile("heroku.prod")
 public class ProdConfig {
-	
+
 	@Bean
 	public EmailService instantiateEmailService() {
 		return new SmtpEmailService();
 	}
-	
+
 }

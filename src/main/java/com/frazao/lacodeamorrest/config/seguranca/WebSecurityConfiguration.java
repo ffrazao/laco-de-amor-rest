@@ -29,6 +29,26 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
+	@Override
+	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(this.userDetailsServiceBean()).passwordEncoder(this.passwordEncoder());
+	}
+
+	@Override
+	protected void configure(final HttpSecurity http) throws Exception {
+		http.anonymous().and().authorizeRequests()
+				.antMatchers("/usuario/recuperar-senha", "/usuario/autorizar-trocar-senha", "/usuario/trocar-senha")
+				.permitAll().antMatchers(HttpMethod.OPTIONS).permitAll().antMatchers("/**").authenticated().and()
+				.formLogin().loginProcessingUrl("/login.do").usernameParameter("username").passwordParameter("password")
+				.loginPage("/login").and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout.do")).and()
+				.userDetailsService(this.userDetailsServiceBean());
+	}
+
+	@Override
+	public void configure(final WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/webjars/**", "/resources/**");
+	}
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(4);
@@ -38,28 +58,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public UserDetailsService userDetailsServiceBean() throws Exception {
 		return new JdbcUserDetails();
-	}
-
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/webjars/**", "/resources/**");
-	}
-
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.anonymous().and()
-			.authorizeRequests().antMatchers("/usuario/recuperar-senha", "/usuario/autorizar-trocar-senha", "/usuario/trocar-senha").permitAll()
-			.antMatchers(HttpMethod.OPTIONS).permitAll()
-			.antMatchers("/**").authenticated()
-				.and().formLogin().loginProcessingUrl("/login.do").usernameParameter("username")
-				.passwordParameter("password").loginPage("/login").and().logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout.do")).and()
-				.userDetailsService(userDetailsServiceBean());
-	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
 	}
 
 }

@@ -25,5 +25,13 @@ spring:
 # LOG
 logging:
   level:
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
+    root: off
+    com.frazao.lacodeamorrest: trace
+    org.hibernate.SQL: off
+    org.springframework.web: off
+    org.springframework.security: off
+    org.springframework.orm: off
+    org.springframework.orm.jpa: off
+    org.springframework.transaction: off
+    org.springframework.transaction.interceptor: off
+    org.springframework.jdbc: off

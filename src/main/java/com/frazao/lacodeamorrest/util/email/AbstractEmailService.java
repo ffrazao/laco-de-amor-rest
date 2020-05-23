@@ -10,21 +10,21 @@ public abstract class AbstractEmailService implements EmailService {
 	@Value("${default.sender}")
 	private String sender;
 
-	@Override
-	public void sendRecuperarToken(MensagemEmail msg) {
-		SimpleMailMessage result = prepareSimpleMailMessageFromRecuperarToken(msg);
-		sendMail(result);
-	}
-
-	protected SimpleMailMessage prepareSimpleMailMessageFromRecuperarToken(MensagemEmail msg) {
-		SimpleMailMessage result = new SimpleMailMessage();
+	protected SimpleMailMessage prepareSimpleMailMessageFromRecuperarToken(final MensagemEmail msg) {
+		final SimpleMailMessage result = new SimpleMailMessage();
 		result.setTo(msg.getEmail());
-		result.setFrom(sender);
+		result.setFrom(this.sender);
 		result.setSubject("Recuperação de senha");
 		result.setSentDate(new Date(System.currentTimeMillis()));
 		result.setText(msg.toMensagemEmail());
 
 		return result;
+	}
+
+	@Override
+	public void sendRecuperarToken(final MensagemEmail msg) {
+		final SimpleMailMessage result = this.prepareSimpleMailMessageFromRecuperarToken(msg);
+		this.sendMail(result);
 	}
 
 }

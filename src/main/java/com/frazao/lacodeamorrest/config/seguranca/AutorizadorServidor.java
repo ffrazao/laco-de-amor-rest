@@ -1,6 +1,5 @@
 package com.frazao.lacodeamorrest.config.seguranca;
 
-
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -41,43 +40,43 @@ public class AutorizadorServidor extends AuthorizationServerConfigurerAdapter {
 
 	@Bean
 	public ApprovalStore approvalStore() {
-		return new JdbcApprovalStore(datasource);
-	}
-	
-	@Bean
-	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-	    return new JpaTransactionManager(entityManagerFactory);
+		return new JdbcApprovalStore(this.datasource);
 	}
 
 	@Bean
 	public AuthorizationCodeServices authorizationCodeServices() {
-		return new JdbcAuthorizationCodeServices(datasource);
+		return new JdbcAuthorizationCodeServices(this.datasource);
 	}
 
 	public JdbcClientDetailsService clientDetailsService() {
-		return new JdbcClientDetailsService(datasource);
+		return new JdbcClientDetailsService(this.datasource);
 	}
 
 	@Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.authenticationManager(authenticationManager).approvalStore(approvalStore())
-				.authorizationCodeServices(authorizationCodeServices()).tokenStore(tokenStore())
-				.tokenEnhancer(tokenEnhancer);
+	public void configure(final AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+		endpoints.authenticationManager(this.authenticationManager).approvalStore(this.approvalStore())
+				.authorizationCodeServices(this.authorizationCodeServices()).tokenStore(this.tokenStore())
+				.tokenEnhancer(this.tokenEnhancer);
 	}
 
 	@Override
-	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+	public void configure(final AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
 
 	}
 
 	@Override
-	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.withClientDetails(clientDetailsService());
+	public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
+		clients.withClientDetails(this.clientDetailsService());
 	}
 
 	@Bean
 	public TokenStore tokenStore() {
-		return new JdbcTokenStore(datasource);
+		return new JdbcTokenStore(this.datasource);
+	}
+
+	@Bean
+	public PlatformTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory) {
+		return new JpaTransactionManager(entityManagerFactory);
 	}
 
 }

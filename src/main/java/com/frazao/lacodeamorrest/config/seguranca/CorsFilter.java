@@ -17,25 +17,32 @@ import org.springframework.stereotype.Component;
 
 /**
  * Filtro para liberar acesso dos apps/páginas ao servidor
- * 
+ *
  * @author ffrazao
  *
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+	@Override
+	public void destroy() {
+		// not needed
+	}
+
+	@Override
+	public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain)
 			throws IOException, ServletException {
 
-		HttpServletResponse response = (HttpServletResponse) res;
-		String method = ((HttpServletRequest) req).getMethod();
+		final HttpServletResponse response = (HttpServletResponse) res;
+		final String method = ((HttpServletRequest) req).getMethod();
 
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
-		response.setHeader("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, POST, PUT"); 
-//		response.setHeader("Access-Control-Allow-Methods", "*"); 
+		response.setHeader("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, POST, PUT");
+//		response.setHeader("Access-Control-Allow-Methods", "*");
 		response.setHeader("Access-Control-Max-Age", "3600");
-		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Key, Authorization, access-control-allow-origin, access-control-allow-methods");
+		response.setHeader("Access-Control-Allow-Headers",
+				"Origin, X-Requested-With, Content-Type, Accept, Key, Authorization, access-control-allow-origin, access-control-allow-methods");
 //		response.setHeader("Access-Control-Allow-Headers", "*");
 
 		// se for Options concluir a requisição e interromper o filter chain
@@ -46,11 +53,8 @@ public class CorsFilter implements Filter {
 		}
 	}
 
-	public void init(FilterConfig filterConfig) {
-		// not needed
-	}
-
-	public void destroy() {
+	@Override
+	public void init(final FilterConfig filterConfig) {
 		// not needed
 	}
 

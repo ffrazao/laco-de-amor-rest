@@ -21,34 +21,34 @@ public class PessoaDAOFiltroImpl implements PessoaDAOFiltro {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Pessoa> filtrar(PessoaFiltroDTO f) {
-		StringBuilder sql = new StringBuilder();
+	public Collection<Pessoa> filtrar(final PessoaFiltroDTO f) {
+		final StringBuilder sql = new StringBuilder();
 		sql.append("SELECT em.*").append("\n");
 		sql.append("FROM   laco_de_amor.pessoa as em").append("\n");
 
-		StringBuilder arg = new StringBuilder();
+		final StringBuilder arg = new StringBuilder();
 		if (StringUtils.isNotBlank(f.getNome())) {
-			arg.append(adWhere(arg)).append("em.nome like :nome").append("\n");
+			arg.append(this.adWhere(arg)).append("em.nome like :nome").append("\n");
 		}
 		if (StringUtils.isNotBlank(f.getCpfCnpj())) {
-			arg.append(adWhere(arg)).append("em.cpf_cnpj = :cpfCnpj").append("\n");
+			arg.append(this.adWhere(arg)).append("em.cpf_cnpj = :cpfCnpj").append("\n");
 		}
-		if (ObjectUtils.isNotEmpty(f.getTipo())) {
-			arg.append(adWhere(arg)).append("em.pessoa_tipo in :tipo").append("\n");
+		if (ObjectUtils.isNotEmpty(f.getPessoaTipo())) {
+			arg.append(this.adWhere(arg)).append("em.tipo in :tipo").append("\n");
 		}
 		sql.append(arg);
 		sql.append("ORDER BY em.nome").append("\n");
 
-		Query query = entityManager.createNativeQuery(sql.toString(), Pessoa.class);
+		final Query query = this.entityManager.createNativeQuery(sql.toString(), Pessoa.class);
 
 		if (StringUtils.isNotBlank(f.getNome())) {
-			query.setParameter("nome", like(f.getNome()));
+			query.setParameter("nome", this.like(f.getNome()));
 		}
 		if (StringUtils.isNotBlank(f.getCpfCnpj())) {
 			query.setParameter("cpfCnpj", f.getCpfCnpj());
 		}
-		if (ObjectUtils.isNotEmpty(f.getTipo())) {
-			query.setParameter("tipo", f.getTipo().stream().map(v -> v.name()).collect(Collectors.toSet()));
+		if (ObjectUtils.isNotEmpty(f.getPessoaTipo())) {
+			query.setParameter("tipo", f.getPessoaTipo().stream().map(v -> v.name()).collect(Collectors.toSet()));
 		}
 
 		return query.getResultList();

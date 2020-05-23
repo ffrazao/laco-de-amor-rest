@@ -13,13 +13,8 @@ import com.frazao.lacodeamorrest.rest.CRUDREST;
 @RequestMapping(value = "pessoa")
 public class PessoaCRUDREST extends CRUDREST<Pessoa, Integer, PessoaFiltroDTO, PessoaBO> {
 
-	public PessoaCRUDREST(@Autowired PessoaBO bo) {
+	public PessoaCRUDREST(@Autowired final PessoaBO bo) {
 		super(bo);
-	}
-
-	@Override
-	public Pessoa novo(Pessoa modelo) throws Exception {
-		return modelo == null ? new Pessoa() : modelo;
 	}
 
 }
