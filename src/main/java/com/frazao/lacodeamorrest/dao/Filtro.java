@@ -14,10 +14,10 @@ public interface Filtro<T, F extends FiltroDTO> {
 	Collection<T> filtrar(F f);
 
 	default String in(final Collection<?> itens) {
-		return String.format("(%s)", itens.stream().map(i -> " ?").collect(Collectors.joining(",")).trim());
+		return itens != null ? String.format("(%s)", itens.stream().map(i -> " ?").collect(Collectors.joining(",")).trim()) : null;
 	}
 
 	default String like(final String arg) {
-		return String.format("%%%s%%", arg.replaceAll(" ", "%"));
+		return arg != null ? String.format("%%%s%%", arg.replaceAll(" ", "%")) : null;
 	}
 }

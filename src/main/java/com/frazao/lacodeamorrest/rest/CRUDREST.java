@@ -14,7 +14,7 @@ import com.frazao.lacodeamorrest.bo.CRUDBO;
 import com.frazao.lacodeamorrest.modelo.dto.FiltroDTO;
 
 @RestController
-public abstract class CRUDREST<T, Id, F extends FiltroDTO, BO extends CRUDBO<T, Id, F>> {
+public abstract class CRUDREST<E, Id, F extends FiltroDTO, BO extends CRUDBO<E, Id, F>> {
 
 	private final BO bo;
 
@@ -23,7 +23,7 @@ public abstract class CRUDREST<T, Id, F extends FiltroDTO, BO extends CRUDBO<T, 
 	}
 
 	@PostMapping
-	public Id create(@RequestBody final T t) throws Exception {
+	public Id create(@RequestBody final E t) throws Exception {
 		final Id result = this.getBO().create(t);
 		return result;
 	}
@@ -34,8 +34,8 @@ public abstract class CRUDREST<T, Id, F extends FiltroDTO, BO extends CRUDBO<T, 
 	}
 
 	@GetMapping
-	public Collection<T> filter(final F filtro) throws Exception {
-		final Collection<T> result = this.getBO().filter(filtro);
+	public Collection<E> filter(final F filtro) throws Exception {
+		final Collection<E> result = this.getBO().filter(filtro);
 		return result;
 	}
 
@@ -45,19 +45,19 @@ public abstract class CRUDREST<T, Id, F extends FiltroDTO, BO extends CRUDBO<T, 
 	}
 
 	@PostMapping("novo")
-	public T novo(@RequestBody(required = false) final T modelo) {
-		final T result = this.getBO().novo(modelo);
+	public E novo(@RequestBody(required = false) final E modelo) {
+		final E result = this.getBO().novo(modelo);
 		return result;
 	}
 
 	@GetMapping("{id}")
-	public T restore(@PathVariable("id") final Id id) throws Exception {
-		final T result = this.getBO().restore(id);
+	public E restore(@PathVariable("id") final Id id) throws Exception {
+		final E result = this.getBO().restore(id);
 		return result;
 	}
 
 	@PutMapping("{id}")
-	public void update(@PathVariable("id") final Id id, @RequestBody final T t) throws Exception {
+	public void update(@PathVariable("id") final Id id, @RequestBody final E t) throws Exception {
 		this.getBO().update(id, t);
 	}
 

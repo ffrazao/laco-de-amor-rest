@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.frazao.lacodeamorrest.dao.laco_de_amor.ProdutoAtributoDAOFiltro;
 import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.ProdutoAtributoFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.ProdutoAtributo;
@@ -23,22 +25,15 @@ public class ProdutoAtributoDAOFiltroImpl implements ProdutoAtributoDAOFiltro {
 		sql.append("SELECT em.*").append("\n");
 		sql.append("FROM   laco_de_amor.produto_atributo as em").append("\n");
 		final StringBuilder arg = new StringBuilder();
-		// if (StringUtils.isNotBlank(f.getCpfCnpj())) {
-		// arg.append(adWhere(arg)).append("em.cpf_cnpj = :cpfCnpj").append("\n");
-		// }
-		// if (ObjectUtils.isNotEmpty(f.getTipo())) {
-		// arg.append(adWhere(arg)).append("em.pessoa_tipo in :tipo").append("\n");
-		// }
+		if (StringUtils.isNotBlank(f.getNome())) {
+			arg.append(adWhere(arg)).append("em.nome like :nome").append("\n");
+		}
 		sql.append(arg);
-		sql.append("ORDER BY 1").append("\n");
+		sql.append("ORDER BY nome").append("\n");
 		final Query query = this.entityManager.createNativeQuery(sql.toString(), ProdutoAtributo.class);
-		// if (StringUtils.isNotBlank(f.getCpfCnpj())) {
-		// query.setParameter("cpfCnpj", f.getCpfCnpj());
-		// }
-		// if (ObjectUtils.isNotEmpty(f.getTipo())) {
-		// query.setParameter("tipo", f.getTipo().stream().map(v ->
-		// v.name()).collect(Collectors.toSet()));
-		// }
+		if (StringUtils.isNotBlank(f.getNome())) {
+			query.setParameter("nome", like(f.getNome()));
+		}
 		return query.getResultList();
 
 	}

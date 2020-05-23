@@ -13,5 +13,7 @@ import lombok.NoArgsConstructor;
 public class ProdutoAtributoFiltroDTO implements FiltroDTO {
 
 	private static final long serialVersionUID = 1L;
+	
+	private String nome;
 
 }

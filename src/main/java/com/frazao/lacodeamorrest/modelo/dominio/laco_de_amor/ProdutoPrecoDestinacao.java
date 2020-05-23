@@ -2,7 +2,7 @@ package com.frazao.lacodeamorrest.modelo.dominio.laco_de_amor;
 
 public enum ProdutoPrecoDestinacao {
 
-	COMPRA("Compra"), VENDA("Venda");
+	Compra("Compra"), Venda("Venda");
 
 	private String descricao;
 
