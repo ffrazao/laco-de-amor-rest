@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.frazao.lacodeamorrest.dao.laco_de_amor.FornecedorDAOFiltro;
 import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.FornecedorFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Fornecedor;
@@ -15,13 +17,16 @@ public class FornecedorDAOFiltroImpl implements FornecedorDAOFiltro {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	@Value("${default.database_schema}")
+	private String databaseSchema;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Fornecedor> filtrar(final FornecedorFiltroDTO f) {
 
 		final StringBuilder sql = new StringBuilder();
 		sql.append("SELECT em.*").append("\n");
-		sql.append("FROM   laco_de_amor.fornecedor as em").append("\n");
+		sql.append("FROM   ").append(databaseSchema).append(".fornecedor as em").append("\n");
 		final StringBuilder arg = new StringBuilder();
 		// if (StringUtils.isNotBlank(f.getCpfCnpj())) {
 		// arg.append(adWhere(arg)).append("em.cpf_cnpj = :cpfCnpj").append("\n");

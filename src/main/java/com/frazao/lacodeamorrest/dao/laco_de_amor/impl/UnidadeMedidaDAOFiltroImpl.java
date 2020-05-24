@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.frazao.lacodeamorrest.dao.laco_de_amor.UnidadeMedidaDAOFiltro;
 import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.UnidadeMedidaFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.UnidadeMedida;
@@ -15,13 +17,16 @@ public class UnidadeMedidaDAOFiltroImpl implements UnidadeMedidaDAOFiltro {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	@Value("${default.database_schema}")
+	private String databaseSchema;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<UnidadeMedida> filtrar(final UnidadeMedidaFiltroDTO f) {
 
 		final StringBuilder sql = new StringBuilder();
 		sql.append("SELECT em.*").append("\n");
-		sql.append("FROM   laco_de_amor.unidade_medida as em").append("\n");
+		sql.append("FROM   ").append(databaseSchema).append(".unidade_medida as em").append("\n");
 		final StringBuilder arg = new StringBuilder();
 		// if (StringUtils.isNotBlank(f.getCpfCnpj())) {
 		// arg.append(adWhere(arg)).append("em.cpf_cnpj = :cpfCnpj").append("\n");

@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.frazao.lacodeamorrest.dao.laco_de_amor.PessoaEnderecoDAOFiltro;
 import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.PessoaEnderecoFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.PessoaEndereco;
@@ -15,13 +17,16 @@ public class PessoaEnderecoDAOFiltroImpl implements PessoaEnderecoDAOFiltro {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	@Value("${default.database_schema}")
+	private String databaseSchema;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<PessoaEndereco> filtrar(final PessoaEnderecoFiltroDTO f) {
 
 		final StringBuilder sql = new StringBuilder();
 		sql.append("SELECT em.*").append("\n");
-		sql.append("FROM   laco_de_amor.pessoa_endereco as em").append("\n");
+		sql.append("FROM   ").append(databaseSchema).append(".pessoa_endereco as em").append("\n");
 		final StringBuilder arg = new StringBuilder();
 		// if (StringUtils.isNotBlank(f.getCpfCnpj())) {
 		// arg.append(adWhere(arg)).append("em.cpf_cnpj = :cpfCnpj").append("\n");

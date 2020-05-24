@@ -41,7 +41,10 @@ logging:
     org.springframework.transaction.interceptor: trace
     org.springframework.jdbc: debug
     
-# E-MAIL
+# VALORES PADRAO
 default:
+# BANCO DE DADOS
+  database_schema: laco_de_amor
+# E-MAIL
   sender: lacodeamordf@gmail.com
   recipient: lacodeamordf@gmail.com

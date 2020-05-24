@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.frazao.lacodeamorrest.dao.laco_de_amor.ProdutoModeloDAOFiltro;
 import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.ProdutoModeloFiltroDTO;
@@ -19,13 +20,16 @@ public class ProdutoModeloDAOFiltroImpl implements ProdutoModeloDAOFiltro {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	@Value("${default.database_schema}")
+	private String databaseSchema;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<ProdutoModelo> filtrar(final ProdutoModeloFiltroDTO f) {
 
 		final StringBuilder sql = new StringBuilder();
 		sql.append("SELECT em.*").append("\n");
-		sql.append("FROM   laco_de_amor.produto_modelo as em").append("\n");
+		sql.append("FROM   ").append(databaseSchema).append(".produto_modelo as em").append("\n");
 		final StringBuilder arg = new StringBuilder();
 		if (StringUtils.isNotBlank(f.getNome())) {
 			arg.append(adWhere(arg)).append("em.nome like :nome").append("\n");
