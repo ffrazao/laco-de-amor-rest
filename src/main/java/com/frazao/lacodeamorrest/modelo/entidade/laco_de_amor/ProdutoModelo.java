@@ -29,6 +29,14 @@ import lombok.NoArgsConstructor;
 public class ProdutoModelo extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
+	
+	@Column(name = "nome")
+	private String nome;
 
 	@Column(name = "codigo")
 	private String codigo;
@@ -37,24 +45,15 @@ public class ProdutoModelo extends EntidadeBaseTemId<Integer> {
 	@Lob
 	private byte[] foto;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
-
 	@Column(name = "materia_prima")
 	@Enumerated(EnumType.STRING)
 	private Confirmacao materiaPrima;
-
-	@Column(name = "nome")
-	private String nome;
 
 	@OneToMany(mappedBy = "produtoModelo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProdutoDescricao> produtoDescricaoList;
 
 	@OneToMany(mappedBy = "produtoModelo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProdutoPreco> produtoPrecoList;
-	
 	
 	@Override
 	public String toString() {

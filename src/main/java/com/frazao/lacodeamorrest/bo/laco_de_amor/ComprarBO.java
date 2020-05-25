@@ -15,9 +15,13 @@ public class ComprarBO extends CRUDBO<Comprar, Integer, ComprarFiltroDTO> {
 		super(Comprar.class, dao);
 	}
 
+	@Autowired
+	private EventoBO eventoBO;
+
 	@Override
-	public ComprarDAO getDAO() {
-		return (ComprarDAO) super.getDAO();
+	public Comprar novo(Comprar modelo) {
+		Comprar result = (Comprar) this.eventoBO.novo(super.novo(modelo));
+		return result;
 	}
 
 }

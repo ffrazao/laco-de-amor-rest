@@ -7,6 +7,10 @@ spring:
 # PERFIL ATIVO
   profiles:
     active: 
+# LOCALIZACAO
+  mvc:
+    locale: pt_BR
+    locale-resolver: fixed
 
 # BANCO DE DADOS
   jpa:

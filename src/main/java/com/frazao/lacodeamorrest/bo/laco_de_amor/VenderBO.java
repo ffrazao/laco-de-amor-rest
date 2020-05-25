@@ -15,9 +15,13 @@ public class VenderBO extends CRUDBO<Vender, Integer, VenderFiltroDTO> {
 		super(Vender.class, dao);
 	}
 
+	@Autowired
+	private EventoBO eventoBO;
+
 	@Override
-	public VenderDAO getDAO() {
-		return (VenderDAO) super.getDAO();
+	public Vender novo(Vender modelo) {
+		Vender result = (Vender) this.eventoBO.novo(super.novo(modelo));
+		return result;
 	}
 
 }

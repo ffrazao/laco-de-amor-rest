@@ -8,4 +8,6 @@ import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.EventoTipo;
 @Repository
 public interface EventoTipoDAO extends JpaRepository<EventoTipo, java.lang.Integer>, EventoTipoDAOFiltro {
 
+	EventoTipo getFindByCodigo(String codigo);
+
 }

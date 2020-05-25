@@ -9,6 +9,9 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -23,12 +26,16 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 @Configuration
-public class Config {
-
-	public static final String DATE_FORMAT = "dd/MM/yyyy";
-
-	public static final String DATETIME_FORMAT = Config.DATE_FORMAT + " HH:mm:ss";
-
+public class Config implements WebMvcConfigurer {
+	
+	@Autowired
+	private LocaleChangeInterceptor localeChangeInterceptor;
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+	    registry.addInterceptor(localeChangeInterceptor);
+	}
+	
 	@Autowired
 	ObjectMapper mapper;
 
@@ -44,17 +51,21 @@ public class Config {
 		this.mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
 
 		final SimpleModule module = new SimpleModule();
+
 		module.addDeserializer(LocalDate.class,
-				new LocalDateDeserializer(DateTimeFormatter.ofPattern(Config.DATE_FORMAT)));
-		module.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(Config.DATE_FORMAT)));
+				new LocalDateDeserializer(DateTimeFormatter.ofPattern(DateTimeConfig.DATE_FORMAT)));
+		module.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DateTimeConfig.DATE_FORMAT)));
+
 		module.addDeserializer(LocalDateTime.class,
-				new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(Config.DATETIME_FORMAT)));
+				new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateTimeConfig.DATETIME_FORMAT)));
 		module.addSerializer(LocalDateTime.class,
-				new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(Config.DATETIME_FORMAT)));
+				new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DateTimeConfig.DATETIME_FORMAT)));
+
 		module.addSerializer(BigInteger.class, new ToStringSerializer());
 
 		this.mapper.registerModule(module);
 
 		return this.mapper;
 	}
+
 }

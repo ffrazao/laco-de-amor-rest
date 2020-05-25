@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
 
 import lombok.Data;
@@ -29,24 +30,30 @@ public class EventoPessoa extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "evento_id")
-	private com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.EventoPessoa eventoId;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "evento_pessoa_funcao_id")
-	private com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.EventoPessoa eventoPessoaFuncaoId;
-
-	@Transient
-	private List<EventoProduto> eventoProdutoList;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-
+	
+	@ManyToOne
+	@JoinColumn(name = "evento_id")
+	@JsonIgnore
+	private Evento evento;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pessoa_id")
-	private com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.EventoPessoa pessoaId;
+	private Pessoa pessoa;
+
+	@ManyToOne
+	@JoinColumn(name = "evento_pessoa_funcao_id")
+	private EventoPessoaFuncao eventoPessoaFuncao;
+
+	@Transient
+	private List<EventoProduto> eventoProdutoList;
+	
+	@Override
+	public String toString() {
+		return String.format("Id = %d", this.getId());
+	}
 
 }

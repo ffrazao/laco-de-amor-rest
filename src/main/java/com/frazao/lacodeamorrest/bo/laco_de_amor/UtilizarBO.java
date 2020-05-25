@@ -15,9 +15,13 @@ public class UtilizarBO extends CRUDBO<Utilizar, Integer, UtilizarFiltroDTO> {
 		super(Utilizar.class, dao);
 	}
 
+	@Autowired
+	private EventoBO eventoBO;
+
 	@Override
-	public UtilizarDAO getDAO() {
-		return (UtilizarDAO) super.getDAO();
+	public Utilizar novo(Utilizar modelo) {
+		Utilizar result = (Utilizar) this.eventoBO.novo(super.novo(modelo));
+		return result;
 	}
 
 }

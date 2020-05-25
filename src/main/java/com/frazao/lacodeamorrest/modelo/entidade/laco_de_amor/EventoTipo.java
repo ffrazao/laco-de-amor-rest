@@ -1,14 +1,11 @@
 package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
 
@@ -28,9 +25,6 @@ public class EventoTipo extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "codigo")
 	private String codigo;
-
-	@Transient
-	private List<Evento> eventoList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

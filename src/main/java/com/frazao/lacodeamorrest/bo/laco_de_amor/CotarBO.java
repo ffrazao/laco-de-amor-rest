@@ -10,14 +10,18 @@ import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Cotar;
 
 @Service
 public class CotarBO extends CRUDBO<Cotar, Integer, CotarFiltroDTO> {
-
+	
 	public CotarBO(@Autowired final CotarDAO dao) {
 		super(Cotar.class, dao);
 	}
 
+	@Autowired
+	private EventoBO eventoBO;
+	
 	@Override
-	public CotarDAO getDAO() {
-		return (CotarDAO) super.getDAO();
+	public Cotar novo(Cotar modelo) {
+		Cotar result = (Cotar) this.eventoBO.novo(super.novo(modelo));
+		return result;
 	}
 
 }

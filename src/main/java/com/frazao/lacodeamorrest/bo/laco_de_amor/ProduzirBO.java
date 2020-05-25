@@ -15,9 +15,13 @@ public class ProduzirBO extends CRUDBO<Produzir, Integer, ProduzirFiltroDTO> {
 		super(Produzir.class, dao);
 	}
 
+	@Autowired
+	private EventoBO eventoBO;
+
 	@Override
-	public ProduzirDAO getDAO() {
-		return (ProduzirDAO) super.getDAO();
+	public Produzir novo(Produzir modelo) {
+		Produzir result = (Produzir) this.eventoBO.novo(super.novo(modelo));
+		return result;
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,15 +30,15 @@ import lombok.NoArgsConstructor;
 public class ProdutoPreco extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
-
-	@Column(name = "destinacao")
-	@Enumerated(EnumType.STRING)
-	private ProdutoPrecoDestinacao destinacao;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
+
+	@Column(name = "destinacao")
+	@Enumerated(EnumType.STRING)
+	private ProdutoPrecoDestinacao destinacao;
 
 	@JsonIgnore
 	@ManyToOne
@@ -49,7 +49,7 @@ public class ProdutoPreco extends EntidadeBaseTemId<Integer> {
 	private BigDecimal valor;
 
 	@Column(name = "vigencia")
-	private LocalDate vigencia;
+	private LocalDateTime vigencia;
 
 	@Override
 	public String toString() {
