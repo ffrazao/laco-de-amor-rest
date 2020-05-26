@@ -7,15 +7,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.frazao.lacodeamorrest.modelo.dominio.Confirmacao;
 import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
 
 import lombok.Data;
@@ -34,13 +36,16 @@ public class UnidadeMedida extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "base")
 	@Enumerated(EnumType.STRING)
-	private com.frazao.lacodeamorrest.modelo.dominio.Confirmacao base;
+	private Confirmacao base;
 
 	@Column(name = "codigo")
 	private String codigo;
 
 	@Transient
 	private List<EventoProduto> eventoProdutoList;
+
+	@OneToMany(mappedBy="pai")
+	private List<UnidadeMedida> filhoList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,13 +54,14 @@ public class UnidadeMedida extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "nome")
 	private String nome;
+	
+	@ManyToOne
+	@JoinColumn(name = "pai_id", insertable = false, updatable = false)
+	@JsonIgnore
+	private UnidadeMedida pai;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pai_id")
-	private com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.UnidadeMedida paiId;
-
-	@Transient
-	private List<UnidadeMedida> unidadeMedidaList;
+	@Column(name = "pai_id")
+	private Integer paiId;
 
 	@Column(name = "valor_base")
 	private BigDecimal valorBase;

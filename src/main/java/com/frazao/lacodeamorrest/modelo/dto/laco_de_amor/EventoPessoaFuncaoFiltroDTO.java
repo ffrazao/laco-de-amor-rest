@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode
-
 public class EventoPessoaFuncaoFiltroDTO implements FiltroDTO {
 
 	private static final long serialVersionUID = 1L;
+
+	public String nome;
+
+	public String codigo;
 
 }

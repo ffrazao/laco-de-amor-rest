@@ -1,7 +1,12 @@
 package com.frazao.lacodeamorrest.bo;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.frazao.lacodeamorrest.dao.Filtro;
 import com.frazao.lacodeamorrest.modelo.dto.FiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBase;
+import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
 import com.frazao.lacodeamorrest.modelo.entidade.TemId;
 
 import lombok.Data;
@@ -130,20 +136,27 @@ public abstract class CRUDBO<E, Id, F extends FiltroDTO> implements BO {
 	}
 
 	protected void vinculaOneToMany(final E t) {
-		for (final Field field : t.getClass().getDeclaredFields()) {
+		for (final Field field : getAllFields(t.getClass())) {
 			if (Collection.class.isAssignableFrom(field.getType())) {
 				try {
 					final boolean origem = field.isAccessible();
 					field.setAccessible(true);
 					if (field.get(t) != null) {
 						for (final Object linha : (Collection<?>) field.get(t)) {
-							for (final Field subField : linha.getClass().getDeclaredFields()) {
-								if (t.getClass().isAssignableFrom(subField.getType())) {
-									final boolean subOrigem = subField.isAccessible();
-									subField.setAccessible(true);
-									CRUDBO.log.trace("OneToMany - vinculando atributo dependente ({})", subField);
-									subField.set(linha, t);
-									subField.setAccessible(subOrigem);
+							for (final Field subField : getAllFields(linha.getClass())) {
+								// verificar classe atual e superclasses
+								for (Class<?> c = t.getClass(); !c.equals(EntidadeBaseTemId.class)
+										&& !c.equals(EntidadeBase.class) && !c.equals(Object.class)
+										&& c != null; c = c.getSuperclass()) {
+									if (c.isAssignableFrom(subField.getType())) {
+										final boolean subOrigem = subField.isAccessible();
+										subField.setAccessible(true);
+										CRUDBO.log.trace("OneToMany - vinculando atributo dependente ({})", subField);
+										subField.set(linha, t);
+										subField.setAccessible(subOrigem);
+										break;
+									}
+
 								}
 							}
 						}
@@ -156,21 +169,36 @@ public abstract class CRUDBO<E, Id, F extends FiltroDTO> implements BO {
 		}
 	}
 
+	protected List<Field> getAllFields(Class<?> type) {
+		List<Field> fields = new ArrayList<>();
+		for (Class<?> c = type; !c.equals(EntidadeBaseTemId.class) && !c.equals(EntidadeBase.class)
+				&& !c.equals(Object.class) && c != null; c = c.getSuperclass()) {
+			fields.addAll(Arrays.asList(c.getDeclaredFields()).stream()
+					.filter(f -> !Modifier.isStatic(f.getModifiers())).collect(Collectors.toList()));
+		}
+		return fields;
+	}
+
 	protected void vinculaOneToOne(final E t) {
-		for (final Field field : t.getClass().getDeclaredFields()) {
+		for (final Field field : getAllFields(t.getClass())) {
 			if (EntidadeBase.class.isAssignableFrom(field.getType())) {
 				try {
 					final boolean origem = field.isAccessible();
 					field.setAccessible(true);
 					final EntidadeBase subVlr = (EntidadeBase) field.get(t);
 					if (subVlr != null) {
-						for (final Field subField : subVlr.getClass().getDeclaredFields()) {
-							if (t.getClass().isAssignableFrom(subField.getType())) {
-								final boolean subOrigem = subField.isAccessible();
-								subField.setAccessible(true);
-								CRUDBO.log.trace("OneToMany - vinculando atributo dependente ({})", subField);
-								subField.set(subVlr, t);
-								subField.setAccessible(subOrigem);
+						for (final Field subField : getAllFields(subVlr.getClass())) {
+							for (Class<?> c = t.getClass(); !c.equals(EntidadeBaseTemId.class)
+									&& !c.equals(EntidadeBase.class) && !c.equals(Object.class)
+									&& c != null; c = c.getSuperclass()) {
+								if (c.isAssignableFrom(subField.getType())) {
+									final boolean subOrigem = subField.isAccessible();
+									subField.setAccessible(true);
+									CRUDBO.log.trace("OneToMany - vinculando atributo dependente ({})", subField);
+									subField.set(subVlr, t);
+									subField.setAccessible(subOrigem);
+									break;
+								}
 							}
 						}
 					}

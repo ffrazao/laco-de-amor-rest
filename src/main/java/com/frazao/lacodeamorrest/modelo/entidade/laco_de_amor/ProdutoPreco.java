@@ -1,7 +1,7 @@
 package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,7 +49,7 @@ public class ProdutoPreco extends EntidadeBaseTemId<Integer> {
 	private BigDecimal valor;
 
 	@Column(name = "vigencia")
-	private LocalDateTime vigencia;
+	private LocalDate vigencia;
 
 	@Override
 	public String toString() {

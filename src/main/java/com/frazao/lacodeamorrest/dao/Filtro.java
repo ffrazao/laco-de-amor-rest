@@ -11,10 +11,16 @@ public interface Filtro<T, F extends FiltroDTO> {
 		return where.length() == 0 ? "WHERE  " : "AND    ";
 	}
 
+	default String adOr(final StringBuilder or) {
+		return or.length() == 0 ? "              " : "        OR    ";
+	}
+
 	Collection<T> filtrar(F f);
 
 	default String in(final Collection<?> itens) {
-		return itens != null ? String.format("(%s)", itens.stream().map(i -> " ?").collect(Collectors.joining(",")).trim()) : null;
+		return itens != null
+				? String.format("(%s)", itens.stream().map(i -> " ?").collect(Collectors.joining(",")).trim())
+				: null;
 	}
 
 	default String like(final String arg) {

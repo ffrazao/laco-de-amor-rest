@@ -24,7 +24,7 @@ public class Vender extends Evento {
 
 	@ManyToOne
 	@JoinColumn(name = "endereco_id")
-	private Vender endereco;
+	private Endereco endereco;
 
 	@Override
 	public String toString() {

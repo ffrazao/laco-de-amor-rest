@@ -1,6 +1,7 @@
 package com.frazao.lacodeamorrest.modelo.dto.laco_de_amor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.frazao.lacodeamorrest.modelo.dto.FiltroDTO;
 
@@ -15,7 +16,7 @@ public class EventoFiltroDTO implements FiltroDTO {
 
 	private static final long serialVersionUID = 1L;
 
-	private LocalDate dataInicio;
+	private LocalDateTime dataInicio;
 	private LocalDate dataTermino;
 	private String produto;
 	private String participante;

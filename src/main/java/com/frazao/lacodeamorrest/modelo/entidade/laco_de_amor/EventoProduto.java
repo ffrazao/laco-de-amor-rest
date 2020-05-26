@@ -2,6 +2,7 @@ package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,7 +39,7 @@ public class EventoProduto extends EntidadeBaseTemId<Integer> {
 	@JsonIgnore
 	private Evento evento;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "produto_id")
 	private Produto produto;
 

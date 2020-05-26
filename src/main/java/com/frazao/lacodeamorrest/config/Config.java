@@ -1,6 +1,6 @@
 package com.frazao.lacodeamorrest.config;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -19,7 +20,6 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -31,13 +31,20 @@ public class Config implements WebMvcConfigurer {
 	@Autowired
 	private LocaleChangeInterceptor localeChangeInterceptor;
 	
+	@Autowired
+	private ObjectMapper mapper;
+	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 	    registry.addInterceptor(localeChangeInterceptor);
 	}
 	
-	@Autowired
-	ObjectMapper mapper;
+	@Override
+	public void addFormatters(FormatterRegistry registry) {
+	    registry.addConverter(new StringToLocalDateConverter());
+	    registry.addConverter(new StringToLocalDateTimeConverter());
+	    registry.addConverter(new StringToBigDecimalConverter());
+	}
 
 	@PostConstruct
 	public ObjectMapper configureMapper() {
@@ -53,15 +60,15 @@ public class Config implements WebMvcConfigurer {
 		final SimpleModule module = new SimpleModule();
 
 		module.addDeserializer(LocalDate.class,
-				new LocalDateDeserializer(DateTimeFormatter.ofPattern(DateTimeConfig.DATE_FORMAT)));
-		module.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DateTimeConfig.DATE_FORMAT)));
+				new LocalDateDeserializer(DateTimeFormatter.ofPattern(FormatConfig.DATE_FORMAT[0])));
+		module.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(FormatConfig.DATE_FORMAT[0])));
 
 		module.addDeserializer(LocalDateTime.class,
-				new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateTimeConfig.DATETIME_FORMAT)));
+				new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(FormatConfig.DATETIME_FORMAT[0])));
 		module.addSerializer(LocalDateTime.class,
-				new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DateTimeConfig.DATETIME_FORMAT)));
+				new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(FormatConfig.DATETIME_FORMAT[0])));
 
-		module.addSerializer(BigInteger.class, new ToStringSerializer());
+		module.addDeserializer(BigDecimal.class, new StringToBigDecimalDeserializer());
 
 		this.mapper.registerModule(module);
 

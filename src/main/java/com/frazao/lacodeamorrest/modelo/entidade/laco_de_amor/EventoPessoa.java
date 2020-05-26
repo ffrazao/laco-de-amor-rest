@@ -2,6 +2,7 @@ package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,8 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
@@ -48,7 +49,7 @@ public class EventoPessoa extends EntidadeBaseTemId<Integer> {
 	@JoinColumn(name = "evento_pessoa_funcao_id")
 	private EventoPessoaFuncao eventoPessoaFuncao;
 
-	@Transient
+	@OneToMany(mappedBy = "eventoPessoa", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<EventoProduto> eventoProdutoList;
 	
 	@Override

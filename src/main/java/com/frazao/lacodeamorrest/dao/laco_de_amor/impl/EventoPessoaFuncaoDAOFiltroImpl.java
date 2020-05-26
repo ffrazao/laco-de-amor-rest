@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.frazao.lacodeamorrest.dao.laco_de_amor.EventoPessoaFuncaoDAOFiltro;
@@ -28,22 +29,26 @@ public class EventoPessoaFuncaoDAOFiltroImpl implements EventoPessoaFuncaoDAOFil
 		sql.append("SELECT em.*").append("\n");
 		sql.append("FROM   ").append(databaseSchema).append(".evento_pessoa_funcao as em").append("\n");
 		final StringBuilder arg = new StringBuilder();
-		// if (StringUtils.isNotBlank(f.getCpfCnpj())) {
-		// arg.append(adWhere(arg)).append("em.cpf_cnpj = :cpfCnpj").append("\n");
-		// }
-		// if (ObjectUtils.isNotEmpty(f.getTipo())) {
-		// arg.append(adWhere(arg)).append("em.pessoa_tipo in :tipo").append("\n");
-		// }
+		
+		final StringBuilder arg1 = new StringBuilder();
+		if (StringUtils.isNotBlank(f.getNome())) {
+			arg1.append(adOr(arg1)).append("(em.nome like :nome)").append("\n");
+		}
+		if (StringUtils.isNotBlank(f.getCodigo())) {
+			arg1.append(adOr(arg1)).append("(em.codigo like :codigo)").append("\n");
+		}
+		if (arg1.length() > 0) {			
+			arg.append(adWhere(arg)).append("(").append(arg1).append(")") .append("\n");
+		}
 		sql.append(arg);
 		sql.append("ORDER BY 1").append("\n");
 		final Query query = this.entityManager.createNativeQuery(sql.toString(), EventoPessoaFuncao.class);
-		// if (StringUtils.isNotBlank(f.getCpfCnpj())) {
-		// query.setParameter("cpfCnpj", f.getCpfCnpj());
-		// }
-		// if (ObjectUtils.isNotEmpty(f.getTipo())) {
-		// query.setParameter("tipo", f.getTipo().stream().map(v ->
-		// v.name()).collect(Collectors.toSet()));
-		// }
+		if (StringUtils.isNotBlank(f.getNome())) {
+			query.setParameter("nome", like(f.getNome()));
+		}
+		if (StringUtils.isNotBlank(f.getCodigo())) {
+			query.setParameter("codigo", like(f.getCodigo()));
+		}
 		return query.getResultList();
 
 	}
