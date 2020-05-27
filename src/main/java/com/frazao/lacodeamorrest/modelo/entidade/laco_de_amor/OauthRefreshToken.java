@@ -29,5 +29,10 @@ public class OauthRefreshToken implements Serializable {
 
 	@Column(name = "token_id")
 	private String tokenId;
+	
+	@Override
+	public String toString() {
+		return String.format("Token = %d", this.getToken());
+	}
 
 }

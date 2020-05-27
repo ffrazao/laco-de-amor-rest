@@ -33,5 +33,10 @@ public class Cliente extends EntidadeBase {
 	@OneToOne
 	@JsonIgnore
 	private Pessoa pessoa;
+	
+	@Override
+	public String toString() {
+		return String.format("Id = %d", this.getId());
+	}
 
 }

@@ -40,5 +40,10 @@ public class Parceiro extends  EntidadeBase {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "funcao")
 	private ParceiroFuncao funcao;
+	
+	@Override
+	public String toString() {
+		return String.format("Id = %d", this.getId());
+	}
 
 }

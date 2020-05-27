@@ -33,4 +33,8 @@ public class EventoPessoaFuncao extends EntidadeBaseTemId<Integer> {
 	@Column(name = "codigo")
 	private String codigo;
 
+	@Override
+	public String toString() {
+		return String.format("Id = %d", this.getId());
+	}
 }

@@ -38,5 +38,10 @@ public class OauthApprovals implements Serializable {
 
 	@Column(name = "userid")
 	private String userid;
+	
+	@Override
+	public String toString() {
+		return String.format("ClientId = %d", this.getClientid());
+	}
 
 }

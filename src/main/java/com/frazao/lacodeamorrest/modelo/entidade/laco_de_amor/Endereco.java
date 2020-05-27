@@ -49,5 +49,10 @@ public class Endereco extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "uf")
 	private String uf;
+	
+	@Override
+	public String toString() {
+		return String.format("Id = %d", this.getId());
+	}
 
 }

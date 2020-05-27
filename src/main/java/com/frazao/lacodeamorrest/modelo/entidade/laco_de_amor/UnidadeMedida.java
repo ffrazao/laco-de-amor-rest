@@ -65,5 +65,10 @@ public class UnidadeMedida extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "valor_base")
 	private BigDecimal valorBase;
+	
+	@Override
+	public String toString() {
+		return String.format("Id = %d", this.getId());
+	}
 
 }

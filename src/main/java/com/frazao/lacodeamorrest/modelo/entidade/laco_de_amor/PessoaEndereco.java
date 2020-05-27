@@ -41,4 +41,9 @@ public class PessoaEndereco extends EntidadeBaseTemId<Integer> {
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 
+	@Override
+	public String toString() {
+		return String.format("Id = %d", this.getId());
+	}
+
 }

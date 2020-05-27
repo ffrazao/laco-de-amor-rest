@@ -73,5 +73,10 @@ public class Usuario extends EntidadeBaseTemId<Integer> {
 	public Optional<Pessoa> getPessoa() {
 		return Optional.ofNullable(this.pessoa);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("Id = %d", this.getId());
+	}
 
 }

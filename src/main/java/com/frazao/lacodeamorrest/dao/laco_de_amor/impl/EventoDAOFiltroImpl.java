@@ -67,14 +67,14 @@ public class EventoDAOFiltroImpl implements EventoDAOFiltro {
 			arg.append(adWhere(arg)).append("em.data <= :dataTermino").append("\n");
 		}
 		if (StringUtils.isNotBlank(f.getProduto())) {
-			arg.append(adWhere(arg)).append("prm.nome like :produto").append("\n");
+			arg.append(adWhere(arg)).append("(prm.codigo like :produto or prm.nome like :produto)").append("\n");
 		}
 		if (StringUtils.isNotBlank(f.getParticipante())) {
-			arg.append(adWhere(arg)).append("pe.nome like :participante").append("\n");
+			arg.append(adWhere(arg)).append("(pe.cpf_cnpj like :participante or pe.nome like :participante)").append("\n");
 		}
 
 		sql.append(arg);
-		sql.append("ORDER BY em.data").append("\n");
+		sql.append("ORDER BY em.data DESC").append("\n");
 		final Query query = this.entityManager.createNativeQuery(sql.toString(), clazz);
 		if (ObjectUtils.isNotEmpty(f.getDataInicio())) {
 			query.setParameter("dataInicio", f.getDataInicio());

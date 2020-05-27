@@ -25,5 +25,10 @@ public class OauthCode implements Serializable {
 
 	@Column(name = "code")
 	private String code;
+	
+	@Override
+	public String toString() {
+		return String.format("Code = %d", this.getCode());
+	}
 
 }
