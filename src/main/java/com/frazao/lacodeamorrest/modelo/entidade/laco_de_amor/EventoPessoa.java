@@ -2,7 +2,6 @@ package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,32 +25,35 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-
 public class EventoPessoa extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
-	
 	@ManyToOne
 	@JoinColumn(name = "evento_id")
 	@JsonIgnore
 	private Evento evento;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pessoa_id")
-	private Pessoa pessoa;
 
 	@ManyToOne
 	@JoinColumn(name = "evento_pessoa_funcao_id")
 	private EventoPessoaFuncao eventoPessoaFuncao;
 
-	@OneToMany(mappedBy = "eventoPessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "eventoPessoa")
 	private List<EventoProduto> eventoProdutoList;
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "pessoa_id")
+	private Pessoa pessoa;
+
+	public EventoPessoa(final Integer id) {
+		super(id);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("Id = %d", this.getId());

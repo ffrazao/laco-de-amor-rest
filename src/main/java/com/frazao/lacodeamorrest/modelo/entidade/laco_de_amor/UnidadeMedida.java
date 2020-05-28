@@ -44,7 +44,7 @@ public class UnidadeMedida extends EntidadeBaseTemId<Integer> {
 	@Transient
 	private List<EventoProduto> eventoProdutoList;
 
-	@OneToMany(mappedBy="pai")
+	@OneToMany(mappedBy = "pai")
 	private List<UnidadeMedida> filhoList;
 
 	@Id
@@ -54,7 +54,7 @@ public class UnidadeMedida extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "nome")
 	private String nome;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "pai_id", insertable = false, updatable = false)
 	@JsonIgnore
@@ -65,7 +65,11 @@ public class UnidadeMedida extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "valor_base")
 	private BigDecimal valorBase;
-	
+
+	public UnidadeMedida(final Integer id) {
+		super(id);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("Id = %d", this.getId());

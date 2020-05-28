@@ -33,7 +33,11 @@ public class EventoTipo extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "nome")
 	private String nome;
-	
+
+	public EventoTipo(final Integer id) {
+		super(id);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("Id = %d", this.getId());

@@ -57,7 +57,7 @@ public class OauthClientDetails implements Serializable {
 
 	@Column(name = "web_server_redirect_uri")
 	private String webServerRedirectUri;
-	
+
 	@Override
 	public String toString() {
 		return String.format("ClientId = %d", this.getClientId());

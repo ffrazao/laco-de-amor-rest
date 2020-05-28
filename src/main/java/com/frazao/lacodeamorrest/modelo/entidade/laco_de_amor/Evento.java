@@ -3,7 +3,6 @@ package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,23 +32,27 @@ public class Evento extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
-
 	@Column(name = "data")
 	private LocalDateTime data;
+
+	@OneToMany(mappedBy = "evento")
+	private List<EventoPessoa> eventoPessoaList;
+
+	@OneToMany(mappedBy = "evento")
+	private List<EventoProduto> eventoProdutoList;
 
 	@ManyToOne
 	@JoinColumn(name = "evento_tipo_id")
 	private EventoTipo eventoTipo;
 
-	@OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<EventoPessoa> eventoPessoaList;
+	@OneToMany(mappedBy = "pai")
+	@JsonIgnore
+	private List<Evento> filhoList;
 
-	@OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<EventoProduto> eventoProdutoList;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
 
 	@ManyToOne
 	@JoinColumn(name = "pai_id", insertable = false, updatable = false)
@@ -59,8 +62,9 @@ public class Evento extends EntidadeBaseTemId<Integer> {
 	@Column(name = "pai_id")
 	private Integer paiId;
 
-	@OneToMany(mappedBy = "pai")
-	private List<Evento> filhoList;
+	public Evento(final Integer id) {
+		super(id);
+	}
 
 	@Override
 	public String toString() {

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.frazao.lacodeamorrest.modelo.dominio.laco_de_amor.ParceiroFuncao;
-import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBase;
+import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,9 +23,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Parceiro extends  EntidadeBase {
+public class Parceiro extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "funcao")
+	private ParceiroFuncao funcao;
 
 	@Id
 	@Column(name = "id")
@@ -37,10 +41,10 @@ public class Parceiro extends  EntidadeBase {
 	@JsonIgnore
 	private Pessoa pessoa;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "funcao")
-	private ParceiroFuncao funcao;
-	
+	public Parceiro(final Integer id) {
+		super(id);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("Id = %d", this.getId());

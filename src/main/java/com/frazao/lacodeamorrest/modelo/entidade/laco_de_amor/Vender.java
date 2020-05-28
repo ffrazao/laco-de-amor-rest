@@ -18,13 +18,17 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Vender extends Evento {
 
-	private static final long serialVersionUID = 1L;
-
 	public static final String CODIGO = "VENDER";
+
+	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
+
+	public Vender(final Integer id) {
+		super(id);
+	}
 
 	@Override
 	public String toString() {

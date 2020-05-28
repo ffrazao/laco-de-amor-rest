@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
 
@@ -19,7 +21,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-
 public class Endereco extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -28,6 +29,7 @@ public class Endereco extends EntidadeBaseTemId<Integer> {
 	private String bairro;
 
 	@Column(name = "cep")
+	@Pattern(regexp = "[0-9]{5}-[0-9]{3}")
 	private String cep;
 
 	@Column(name = "cidade")
@@ -42,6 +44,7 @@ public class Endereco extends EntidadeBaseTemId<Integer> {
 	private Integer id;
 
 	@Column(name = "logradouro")
+	@NotBlank
 	private String logradouro;
 
 	@Column(name = "numero")
@@ -49,7 +52,11 @@ public class Endereco extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "uf")
 	private String uf;
-	
+
+	public Endereco(final Integer id) {
+		super(id);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("Id = %d", this.getId());

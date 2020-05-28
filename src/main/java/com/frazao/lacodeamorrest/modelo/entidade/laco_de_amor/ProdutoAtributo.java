@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ProdutoAtributo extends EntidadeBaseTemId<Integer> {
-
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -29,7 +29,11 @@ public class ProdutoAtributo extends EntidadeBaseTemId<Integer> {
 
 	@Column(name = "nome")
 	private String nome;
-	
+
+	public ProdutoAtributo(final Integer id) {
+		super(id);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%s", this.id);

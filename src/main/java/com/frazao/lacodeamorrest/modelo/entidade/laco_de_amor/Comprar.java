@@ -16,9 +16,13 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Comprar extends Evento {
 
+	public static final String CODIGO = "COMPRAR";
+
 	private static final long serialVersionUID = 1L;
 
-	public static final String CODIGO = "COMPRAR";
+	public Comprar(final Integer id) {
+		super(id);
+	}
 
 	@Override
 	public String toString() {

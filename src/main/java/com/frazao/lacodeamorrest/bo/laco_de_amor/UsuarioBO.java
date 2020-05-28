@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.frazao.lacodeamorrest.bo.BoException;
+import com.frazao.lacodeamorrest.bo.BOException;
 import com.frazao.lacodeamorrest.bo.CRUDBO;
 import com.frazao.lacodeamorrest.bo.RecursoNaoEncontradoBoException;
 import com.frazao.lacodeamorrest.dao.laco_de_amor.UsuarioDAO;
@@ -49,12 +49,12 @@ public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
 		}
 
 		if (usuario.getRecuperarSenhaToken() == null || usuario.getRecuperarSenhaExpira() == null) {
-			throw new BoException("Troca de senha não solicitada!");
+			throw new BOException("Troca de senha não solicitada!");
 		}
 
 		// verificar se o token é válido
 		if (!usuario.getRecuperarSenhaToken().equals(valor.getToken())) {
-			throw new BoException("Token inválido!");
+			throw new BOException("Token inválido!");
 		}
 
 		final Calendar hojeCl = Calendar.getInstance();
@@ -64,7 +64,7 @@ public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
 		expiraCl.setTimeInMillis(usuario.getRecuperarSenhaExpira());
 
 		if (hojeCl.after(expiraCl)) {
-			throw new BoException("Token expirado!");
+			throw new BOException("Token expirado!");
 
 		}
 

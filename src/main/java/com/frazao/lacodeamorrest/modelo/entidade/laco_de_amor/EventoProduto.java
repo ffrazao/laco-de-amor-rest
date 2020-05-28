@@ -2,7 +2,6 @@ package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,41 +23,45 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-
 public class EventoProduto extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "evento_id")
+	@JsonIgnore
+	private Evento evento;
+
+	@ManyToOne
+	@JoinColumn(name = "evento_pessoa_id")
+	@JsonIgnore
+	private EventoPessoa eventoPessoa;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "evento_id")
-	@JsonIgnore
-	private Evento evento;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "produto_id")
 	private Produto produto;
 
-	@ManyToOne
-	@JoinColumn(name = "evento_pessoa_id")
-	private EventoPessoa eventoPessoa;
-
-	@Column(name = "valor_unitario")
-	private BigDecimal valorUnitario;
+	@Column(name = "quantidade")
+	private BigDecimal quantidade;
 
 	@ManyToOne
 	@JoinColumn(name = "unidade_medida_id")
 	private UnidadeMedida unidadeMedida;
-	
-	@Column(name = "quantidade")
-	private BigDecimal quantidade;
-	
+
 	@Column(name = "valor_total")
 	private BigDecimal valorTotal;
+
+	@Column(name = "valor_unitario")
+	private BigDecimal valorUnitario;
+
+	public EventoProduto(final Integer id) {
+		super(id);
+	}
 
 	@Override
 	public String toString() {

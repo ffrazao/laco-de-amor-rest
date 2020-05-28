@@ -16,9 +16,13 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Cotar extends Evento {
 
+	public static final String CODIGO = "COTAR";
+
 	private static final long serialVersionUID = 1L;
 
-	public static final String CODIGO = "COTAR";
+	public Cotar(final Integer id) {
+		super(id);
+	}
 
 	@Override
 	public String toString() {

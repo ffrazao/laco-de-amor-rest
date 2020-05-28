@@ -45,7 +45,7 @@ public abstract class CRUDREST<E, Id, F extends FiltroDTO, BO extends CRUDBO<E, 
 	}
 
 	@PostMapping("novo")
-	public E novo(@RequestBody(required = false) final E modelo) {
+	public E novo(@RequestBody(required = false) final E modelo) throws Exception {
 		final E result = this.getBO().novo(modelo);
 		return result;
 	}

@@ -22,16 +22,20 @@ public class EventoPessoaFuncao extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "codigo")
+	private String codigo;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-	
+
 	@Column(name = "nome")
 	private String nome;
 
-	@Column(name = "codigo")
-	private String codigo;
+	public EventoPessoaFuncao(final Integer id) {
+		super(id);
+	}
 
 	@Override
 	public String toString() {

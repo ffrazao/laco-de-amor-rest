@@ -48,6 +48,10 @@ public class ProdutoDescricao extends EntidadeBaseTemId<Integer> {
 	@Lob
 	private String valor;
 
+	public ProdutoDescricao(final Integer id) {
+		super(id);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%s", this.id);

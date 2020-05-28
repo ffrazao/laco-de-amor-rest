@@ -33,6 +33,10 @@ public class Produto extends EntidadeBaseTemId<Integer> {
 	@JoinColumn(name = "produto_modelo_id")
 	private ProdutoModelo produtoModelo;
 
+	public Produto(final Integer id) {
+		super(id);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("Id = %d", this.getId());
