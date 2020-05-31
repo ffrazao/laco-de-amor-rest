@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(schema = "laco_de_amor", name = "produto")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false, of = "id")
 public class Produto extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;

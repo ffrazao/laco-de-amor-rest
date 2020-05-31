@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(schema = "laco_de_amor", name = "evento_produto")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false, of = "id")
 public class EventoProduto extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -34,7 +34,6 @@ public class EventoProduto extends EntidadeBaseTemId<Integer> {
 
 	@ManyToOne
 	@JoinColumn(name = "evento_pessoa_id")
-	@JsonIgnore
 	private EventoPessoa eventoPessoa;
 
 	@Id

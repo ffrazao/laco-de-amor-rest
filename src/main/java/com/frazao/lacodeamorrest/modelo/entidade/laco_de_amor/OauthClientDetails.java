@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-
 public class OauthClientDetails implements Serializable {
 
 	private static final long serialVersionUID = 1L;

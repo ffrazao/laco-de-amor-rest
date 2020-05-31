@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "parceiro")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false, of = "id")
 public class Parceiro extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;

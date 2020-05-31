@@ -9,15 +9,11 @@ import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.UnidadeMedidaFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.UnidadeMedida;
 
 @Service
-public class UnidadeMedidaBO extends CRUDBO<UnidadeMedida, java.lang.Integer, UnidadeMedidaFiltroDTO> {
+public class UnidadeMedidaBO
+		extends CRUDBO<UnidadeMedida, java.lang.Integer, UnidadeMedidaFiltroDTO, UnidadeMedidaDAO> {
 
 	public UnidadeMedidaBO(@Autowired final UnidadeMedidaDAO dao) {
 		super(UnidadeMedida.class, dao);
-	}
-
-	@Override
-	public UnidadeMedidaDAO getDAO() {
-		return (UnidadeMedidaDAO) super.getDAO();
 	}
 
 }

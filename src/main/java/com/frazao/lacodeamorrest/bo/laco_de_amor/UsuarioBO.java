@@ -26,7 +26,7 @@ import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Usuario;
 import com.frazao.lacodeamorrest.util.email.EmailService;
 
 @Service
-public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
+public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO, UsuarioDAO> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UsuarioBO.class);
 
@@ -73,11 +73,6 @@ public class UsuarioBO extends CRUDBO<Usuario, Integer, UsuarioFiltroDTO> {
 
 	public Usuario findByLogin(final String valor) {
 		return this.getDAO().findByLogin(valor);
-	}
-
-	@Override
-	public UsuarioDAO getDAO() {
-		return (UsuarioDAO) super.getDAO();
 	}
 
 	@Transactional

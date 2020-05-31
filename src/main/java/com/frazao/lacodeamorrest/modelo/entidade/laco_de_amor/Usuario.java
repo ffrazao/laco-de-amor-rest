@@ -26,8 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "usuario")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-
+@EqualsAndHashCode(callSuper = false, of = "id")
 public class Usuario extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;

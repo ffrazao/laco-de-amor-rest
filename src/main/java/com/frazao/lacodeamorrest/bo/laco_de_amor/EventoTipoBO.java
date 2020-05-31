@@ -9,15 +9,10 @@ import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.EventoTipoFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.EventoTipo;
 
 @Service
-public class EventoTipoBO extends CRUDBO<EventoTipo, java.lang.Integer, EventoTipoFiltroDTO> {
+public class EventoTipoBO extends CRUDBO<EventoTipo, java.lang.Integer, EventoTipoFiltroDTO, EventoTipoDAO> {
 
 	public EventoTipoBO(@Autowired final EventoTipoDAO dao) {
 		super(EventoTipo.class, dao);
-	}
-
-	@Override
-	public EventoTipoDAO getDAO() {
-		return (EventoTipoDAO) super.getDAO();
 	}
 
 }

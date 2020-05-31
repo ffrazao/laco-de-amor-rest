@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(schema = "laco_de_amor", name = "evento_pessoa_funcao")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false, of = "id")
 public class EventoPessoaFuncao extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;

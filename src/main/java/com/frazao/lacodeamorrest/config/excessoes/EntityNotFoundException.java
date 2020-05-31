@@ -10,13 +10,13 @@ public class EntityNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public EntityNotFoundException(Class<?> clazz, String... searchParamsMap) {
+	public EntityNotFoundException(Class<?> clazz, Object... searchParamsMap) {
 		super(EntityNotFoundException.generateMessage(clazz.getSimpleName(),
 				toMap(String.class, String.class, searchParamsMap)));
 	}
 
 	private static String generateMessage(String entity, Map<String, String> searchParams) {
-		return StringUtils.capitalize(entity) + " was not found for parameters " + searchParams;
+		return StringUtils.capitalize(entity) + " não encontrado para os parâmetros " + searchParams;
 	}
 
 	private static <K, V> Map<K, V> toMap(Class<K> keyType, Class<V> valueType, Object... entries) {

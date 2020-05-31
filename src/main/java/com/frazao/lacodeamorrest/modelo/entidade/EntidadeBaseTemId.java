@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public abstract class EntidadeBaseTemId<Id> extends EntidadeBase implements TemId<Id> {
 
 	private static final long serialVersionUID = 1L;

@@ -9,15 +9,10 @@ import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.ProdutoFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Produto;
 
 @Service
-public class ProdutoBO extends CRUDBO<Produto, java.lang.Integer, ProdutoFiltroDTO> {
+public class ProdutoBO extends CRUDBO<Produto, Integer, ProdutoFiltroDTO, ProdutoDAO> {
 
 	public ProdutoBO(@Autowired final ProdutoDAO dao) {
 		super(Produto.class, dao);
-	}
-
-	@Override
-	public ProdutoDAO getDAO() {
-		return (ProdutoDAO) super.getDAO();
 	}
 
 }

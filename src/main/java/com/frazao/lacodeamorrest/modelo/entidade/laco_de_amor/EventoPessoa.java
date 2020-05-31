@@ -1,10 +1,10 @@
 package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(schema = "laco_de_amor", name = "evento_pessoa")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false, of = "id")
 public class EventoPessoa extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -39,14 +39,14 @@ public class EventoPessoa extends EntidadeBaseTemId<Integer> {
 	private EventoPessoaFuncao eventoPessoaFuncao;
 
 	@OneToMany(mappedBy = "eventoPessoa")
-	private List<EventoProduto> eventoProdutoList;
+	private Collection<EventoProduto> eventoProdutoList = new ArrayList<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 

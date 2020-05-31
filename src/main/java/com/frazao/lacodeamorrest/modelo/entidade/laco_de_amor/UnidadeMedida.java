@@ -1,7 +1,8 @@
 package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,8 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(schema = "laco_de_amor", name = "unidade_medida")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-
+@EqualsAndHashCode(callSuper = false, of = "id")
 public class UnidadeMedida extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -42,10 +42,10 @@ public class UnidadeMedida extends EntidadeBaseTemId<Integer> {
 	private String codigo;
 
 	@Transient
-	private List<EventoProduto> eventoProdutoList;
+	private Collection<EventoProduto> eventoProdutoList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "pai")
-	private List<UnidadeMedida> filhoList;
+	private Collection<UnidadeMedida> filhoList = new ArrayList<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

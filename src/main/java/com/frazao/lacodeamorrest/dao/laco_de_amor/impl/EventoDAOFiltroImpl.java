@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.frazao.lacodeamorrest.dao.laco_de_amor.EventoDAOFiltro;
+import com.frazao.lacodeamorrest.modelo.dominio.Confirmacao;
 import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.EventoFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Evento;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Vender;
@@ -30,7 +31,7 @@ public class EventoDAOFiltroImpl implements EventoDAOFiltro {
 		return this.filtrar("evento", Evento.class, f).getResultList();
 
 	}
-	
+
 	@Override
 	public Query filtrar(final String tabela, final Class<? extends Evento> clazz, final EventoFiltroDTO f) {
 
@@ -42,7 +43,7 @@ public class EventoDAOFiltroImpl implements EventoDAOFiltro {
 		sql.append("FROM         ").append(databaseSchema).append(".evento as em").append("\n");
 		sql.append("INNER JOIN   ").append(databaseSchema).append(".").append(tabela).append("  as sub").append("\n");
 		sql.append("ON           em.id = sub.id").append("\n");
-		
+
 		if (StringUtils.isNotBlank(f.getProduto())) {
 			sql.append("LEFT JOIN    laco_de_amor.evento_produto as epr").append("\n");
 			sql.append("ON           epr.evento_id = em.id").append("\n");
@@ -51,7 +52,7 @@ public class EventoDAOFiltroImpl implements EventoDAOFiltro {
 			sql.append("LEFT JOIN    laco_de_amor.produto_modelo prm").append("\n");
 			sql.append("ON           prm.id = pr.produto_modelo_id").append("\n");
 		}
-		
+
 		if (StringUtils.isNotBlank(f.getParticipante())) {
 			sql.append("LEFT JOIN    laco_de_amor.evento_pessoa as epe").append("\n");
 			sql.append("ON           epe.evento_id = em.id").append("\n");
@@ -70,7 +71,13 @@ public class EventoDAOFiltroImpl implements EventoDAOFiltro {
 			arg.append(adWhere(arg)).append("(prm.codigo like :produto or prm.nome like :produto)").append("\n");
 		}
 		if (StringUtils.isNotBlank(f.getParticipante())) {
-			arg.append(adWhere(arg)).append("(pe.cpf_cnpj like :participante or pe.nome like :participante)").append("\n");
+			arg.append(adWhere(arg)).append("(pe.cpf_cnpj like :participante or pe.nome like :participante)")
+					.append("\n");
+		}
+		if (Confirmacao.S.equals(f.getUtilizado())) {
+			arg.append(adWhere(arg)).append("em.id in (select pai_id from evento where pai_id is not null)").append("\n");
+		} else if (Confirmacao.N.equals(f.getUtilizado())) {
+			arg.append(adWhere(arg)).append("em.id not in (select pai_id from evento where pai_id is not null)").append("\n");
 		}
 
 		sql.append(arg);

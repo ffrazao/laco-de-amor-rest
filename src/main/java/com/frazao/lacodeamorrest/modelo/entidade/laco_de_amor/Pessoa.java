@@ -1,6 +1,7 @@
 package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,7 +37,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "pessoa")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false, of = "id")
 @GroupSequenceProvider(value = PessoaTipoGroupSequenceProvider.class)
 public class Pessoa extends EntidadeBaseTemId<Integer> {
 
@@ -82,7 +83,7 @@ public class Pessoa extends EntidadeBaseTemId<Integer> {
 	private Parceiro parceiro;
 
 	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<PessoaEndereco> pessoaEnderecoList;
+	private Collection<PessoaEndereco> pessoaEnderecoList = new ArrayList<>();
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo")

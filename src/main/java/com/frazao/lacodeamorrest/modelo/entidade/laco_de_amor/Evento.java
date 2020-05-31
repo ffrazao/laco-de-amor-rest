@@ -1,7 +1,8 @@
 package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false, of = "id")
 public class Evento extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -36,10 +37,10 @@ public class Evento extends EntidadeBaseTemId<Integer> {
 	private LocalDateTime data;
 
 	@OneToMany(mappedBy = "evento")
-	private List<EventoPessoa> eventoPessoaList;
+	private Collection<EventoPessoa> eventoPessoaList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "evento")
-	private List<EventoProduto> eventoProdutoList;
+	private Collection<EventoProduto> eventoProdutoList = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "evento_tipo_id")
@@ -47,7 +48,7 @@ public class Evento extends EntidadeBaseTemId<Integer> {
 
 	@OneToMany(mappedBy = "pai")
 	@JsonIgnore
-	private List<Evento> filhoList;
+	private Collection<Evento> filhoList = new ArrayList<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +57,6 @@ public class Evento extends EntidadeBaseTemId<Integer> {
 
 	@ManyToOne
 	@JoinColumn(name = "pai_id", insertable = false, updatable = false)
-	@JsonIgnore
 	private Evento pai;
 
 	@Column(name = "pai_id")

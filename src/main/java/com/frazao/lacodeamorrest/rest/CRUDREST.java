@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.frazao.lacodeamorrest.bo.CRUDBO;
 import com.frazao.lacodeamorrest.modelo.dto.FiltroDTO;
+import com.frazao.lacodeamorrest.modelo.entidade.EntidadeBaseTemId;
 
 @RestController
-public abstract class CRUDREST<E, Id, F extends FiltroDTO, BO extends CRUDBO<E, Id, F>> {
+public abstract class CRUDREST<E extends EntidadeBaseTemId<Id>, Id, F extends FiltroDTO, BO extends CRUDBO<E, Id, F, ?>> {
 
 	private final BO bo;
 

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "endereco")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false, of = "id")
 public class Endereco extends EntidadeBaseTemId<Integer> {
 
 	private static final long serialVersionUID = 1L;

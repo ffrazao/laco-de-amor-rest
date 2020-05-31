@@ -12,7 +12,7 @@ import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.UtilizarFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Utilizar;
 
 @Service
-public class UtilizarBO extends CRUDBO<Utilizar, Integer, UtilizarFiltroDTO> {
+public class UtilizarBO extends CRUDBO<Utilizar, Integer, UtilizarFiltroDTO, UtilizarDAO> {
 
 	@Autowired
 	private EventoBO eventoBO;
@@ -22,8 +22,9 @@ public class UtilizarBO extends CRUDBO<Utilizar, Integer, UtilizarFiltroDTO> {
 	}
 
 	@Override
-	public Utilizar entrando(@Valid final Utilizar t, final String acao) throws BOException {
-		final Utilizar result = (Utilizar) this.eventoBO.entrando(t, acao);
+	public Utilizar entrando(@Valid final Utilizar t, @Valid final Utilizar anterior, final String acao)
+			throws BOException {
+		final Utilizar result = (Utilizar) this.eventoBO.entrando(t, anterior, acao);
 		return result;
 	}
 
@@ -31,6 +32,11 @@ public class UtilizarBO extends CRUDBO<Utilizar, Integer, UtilizarFiltroDTO> {
 	public Utilizar entrou(@Valid final Utilizar t, final String acao) throws BOException {
 		final Utilizar result = (Utilizar) this.eventoBO.entrou(t, acao);
 		return result;
+	}
+
+	@Override
+	public void excluindo(final Utilizar anterior, final Integer id) throws BOException {
+		this.eventoBO.excluindo(anterior, id);
 	}
 
 	@Override

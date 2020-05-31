@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode
-
 public abstract class EntidadeBase implements Serializable {
 
 	private static final long serialVersionUID = 1L;

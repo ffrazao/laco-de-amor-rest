@@ -9,15 +9,10 @@ import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.FornecedorFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Fornecedor;
 
 @Service
-public class FornecedorBO extends CRUDBO<Fornecedor, Integer, FornecedorFiltroDTO> {
+public class FornecedorBO extends CRUDBO<Fornecedor, Integer, FornecedorFiltroDTO, FornecedorDAO> {
 
 	public FornecedorBO(@Autowired final FornecedorDAO dao) {
 		super(Fornecedor.class, dao);
-	}
-
-	@Override
-	public FornecedorDAO getDAO() {
-		return (FornecedorDAO) super.getDAO();
 	}
 
 }

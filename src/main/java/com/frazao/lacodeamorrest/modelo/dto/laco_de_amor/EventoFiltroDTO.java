@@ -2,6 +2,7 @@ package com.frazao.lacodeamorrest.modelo.dto.laco_de_amor;
 
 import java.time.LocalDate;
 
+import com.frazao.lacodeamorrest.modelo.dominio.Confirmacao;
 import com.frazao.lacodeamorrest.modelo.dto.FiltroDTO;
 
 import lombok.Data;
@@ -19,5 +20,6 @@ public class EventoFiltroDTO implements FiltroDTO {
 	private LocalDate dataTermino;
 	private String produto;
 	private String participante;
+	private Confirmacao utilizado;
 
 }

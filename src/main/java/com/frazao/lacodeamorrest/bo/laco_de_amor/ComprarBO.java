@@ -12,7 +12,7 @@ import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.ComprarFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Comprar;
 
 @Service
-public class ComprarBO extends CRUDBO<Comprar, Integer, ComprarFiltroDTO> {
+public class ComprarBO extends CRUDBO<Comprar, Integer, ComprarFiltroDTO, ComprarDAO> {
 
 	@Autowired
 	private EventoBO eventoBO;
@@ -22,8 +22,9 @@ public class ComprarBO extends CRUDBO<Comprar, Integer, ComprarFiltroDTO> {
 	}
 
 	@Override
-	public Comprar entrando(@Valid final Comprar t, final String acao) throws BOException {
-		final Comprar result = (Comprar) this.eventoBO.entrando(t, acao);
+	public Comprar entrando(@Valid final Comprar t, @Valid final Comprar anterior, final String acao)
+			throws BOException {
+		final Comprar result = (Comprar) this.eventoBO.entrando(t, anterior, acao);
 		return result;
 	}
 
@@ -31,6 +32,11 @@ public class ComprarBO extends CRUDBO<Comprar, Integer, ComprarFiltroDTO> {
 	public Comprar entrou(@Valid final Comprar t, final String acao) throws BOException {
 		final Comprar result = (Comprar) this.eventoBO.entrou(t, acao);
 		return result;
+	}
+
+	@Override
+	public void excluindo(final Comprar anterior, final Integer id) throws BOException {
+		this.eventoBO.excluindo(anterior, id);
 	}
 
 	@Override

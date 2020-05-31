@@ -9,15 +9,11 @@ import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.PessoaEnderecoFiltroDTO
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.PessoaEndereco;
 
 @Service
-public class PessoaEnderecoBO extends CRUDBO<PessoaEndereco, java.lang.Integer, PessoaEnderecoFiltroDTO> {
+public class PessoaEnderecoBO
+		extends CRUDBO<PessoaEndereco, java.lang.Integer, PessoaEnderecoFiltroDTO, PessoaEnderecoDAO> {
 
 	public PessoaEnderecoBO(@Autowired final PessoaEnderecoDAO dao) {
 		super(PessoaEndereco.class, dao);
-	}
-
-	@Override
-	public PessoaEnderecoDAO getDAO() {
-		return (PessoaEnderecoDAO) super.getDAO();
 	}
 
 }

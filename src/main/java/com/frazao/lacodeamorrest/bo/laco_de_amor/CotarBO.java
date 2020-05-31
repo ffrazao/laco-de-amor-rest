@@ -12,7 +12,7 @@ import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.CotarFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Cotar;
 
 @Service
-public class CotarBO extends CRUDBO<Cotar, Integer, CotarFiltroDTO> {
+public class CotarBO extends CRUDBO<Cotar, Integer, CotarFiltroDTO, CotarDAO> {
 
 	@Autowired
 	private EventoBO eventoBO;
@@ -22,8 +22,8 @@ public class CotarBO extends CRUDBO<Cotar, Integer, CotarFiltroDTO> {
 	}
 
 	@Override
-	public Cotar entrando(@Valid final Cotar t, final String acao) throws BOException {
-		final Cotar result = (Cotar) this.eventoBO.entrando(t, acao);
+	public Cotar entrando(@Valid final Cotar t, @Valid final Cotar anterior, final String acao) throws BOException {
+		final Cotar result = (Cotar) this.eventoBO.entrando(t, anterior, acao);
 		return result;
 	}
 
@@ -31,6 +31,11 @@ public class CotarBO extends CRUDBO<Cotar, Integer, CotarFiltroDTO> {
 	public Cotar entrou(@Valid final Cotar t, final String acao) throws BOException {
 		final Cotar result = (Cotar) this.eventoBO.entrou(t, acao);
 		return result;
+	}
+
+	@Override
+	public void excluindo(final Cotar anterior, final Integer id) throws BOException {
+		this.eventoBO.excluindo(anterior, id);
 	}
 
 	@Override

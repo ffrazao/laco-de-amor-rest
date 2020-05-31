@@ -12,7 +12,7 @@ import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.ProduzirFiltroDTO;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Produzir;
 
 @Service
-public class ProduzirBO extends CRUDBO<Produzir, Integer, ProduzirFiltroDTO> {
+public class ProduzirBO extends CRUDBO<Produzir, Integer, ProduzirFiltroDTO, ProduzirDAO> {
 
 	@Autowired
 	private EventoBO eventoBO;
@@ -22,8 +22,9 @@ public class ProduzirBO extends CRUDBO<Produzir, Integer, ProduzirFiltroDTO> {
 	}
 
 	@Override
-	public Produzir entrando(@Valid final Produzir t, final String acao) throws BOException {
-		final Produzir result = (Produzir) this.eventoBO.entrando(t, acao);
+	public Produzir entrando(@Valid final Produzir t, @Valid final Produzir anterior, final String acao)
+			throws BOException {
+		final Produzir result = (Produzir) this.eventoBO.entrando(t, anterior, acao);
 		return result;
 	}
 
@@ -31,6 +32,11 @@ public class ProduzirBO extends CRUDBO<Produzir, Integer, ProduzirFiltroDTO> {
 	public Produzir entrou(@Valid final Produzir t, final String acao) throws BOException {
 		final Produzir result = (Produzir) this.eventoBO.entrou(t, acao);
 		return result;
+	}
+
+	@Override
+	public void excluindo(final Produzir anterior, final Integer id) throws BOException {
+		this.eventoBO.excluindo(anterior, id);
 	}
 
 	@Override
