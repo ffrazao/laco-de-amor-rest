@@ -18,7 +18,7 @@ public class TrocarSenhaDTO extends AutorizarTrocarSenhaDTO {
 	private String senha;
 
 	public TrocarSenhaDTO(final AutorizarTrocarSenhaDTO autorizarTrocarSenhaDTO, final String senha) {
-		super(autorizarTrocarSenhaDTO, autorizarTrocarSenhaDTO.getToken());
+		super(autorizarTrocarSenhaDTO, autorizarTrocarSenhaDTO.getToken(), null);
 		this.setSenha(senha);
 	}
 

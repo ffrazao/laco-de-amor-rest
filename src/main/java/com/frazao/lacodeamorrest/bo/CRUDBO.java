@@ -52,6 +52,8 @@ public abstract class CRUDBO<E extends EntidadeBaseTemId<Id>, Id, F extends Filt
 			}
 			this.entrou(t, "C");
 			return t.getId();
+		} catch (final BOException e) {
+			throw e;
 		} catch (final Exception e) {
 			throw new BOException("Erro ao criar registro", e);
 		}
@@ -87,6 +89,8 @@ public abstract class CRUDBO<E extends EntidadeBaseTemId<Id>, Id, F extends Filt
 				CRUDBO.log.trace("Excluido ({})..", id);
 			}
 			this.excluido(anterior, id);
+		} catch (final BOException e) {
+			throw e;
 		} catch (final Exception e) {
 			throw new BOException("Erro ao excluir registro", e);
 		}
@@ -102,6 +106,8 @@ public abstract class CRUDBO<E extends EntidadeBaseTemId<Id>, Id, F extends Filt
 			this.vinculaOneToMany(t);
 			this.vinculaOneToOne(t);
 			return t;
+		} catch (final BOException e) {
+			throw e;
 		} catch (final Exception e) {
 			throw new BOException("Erro ao vincular dependencias do registro", e);
 		}
@@ -132,6 +138,8 @@ public abstract class CRUDBO<E extends EntidadeBaseTemId<Id>, Id, F extends Filt
 				CRUDBO.log.trace("Filtrado ({})..", result);
 			}
 			return this.saiu(result, "F");
+		} catch (final BOException e) {
+			throw e;
 		} catch (final Exception e) {
 			throw new BOException("Erro ao buscar registros", e);
 		}
@@ -188,6 +196,8 @@ public abstract class CRUDBO<E extends EntidadeBaseTemId<Id>, Id, F extends Filt
 				CRUDBO.log.trace("Criado novo ({})..", result);
 			}
 			return result;
+		} catch (final BOException e) {
+			throw e;
 		} catch (final Exception e) {
 			throw new BOException("Erro ao preparar novo registro", e);
 		}
@@ -204,6 +214,8 @@ public abstract class CRUDBO<E extends EntidadeBaseTemId<Id>, Id, F extends Filt
 				CRUDBO.log.debug("Recuperado ({})..", result);
 			}
 			return this.saiu(result, "R");
+		} catch (final BOException e) {
+			throw e;
 		} catch (final Exception e) {
 			throw new BOException("Erro ao buscar registro", e);
 		}
@@ -248,12 +260,14 @@ public abstract class CRUDBO<E extends EntidadeBaseTemId<Id>, Id, F extends Filt
 				CRUDBO.log.trace("Atualizado ({})..", t);
 			}
 			return this.entrou(t, "U");
+		} catch (final BOException e) {
+			throw e;
 		} catch (final Exception e) {
 			throw new BOException("Erro ao atualizar registro", e);
 		}
 	}
 
-	protected void vinculaOneToMany(final E t) {
+	protected void vinculaOneToMany(final E t) throws BOException {
 		for (final Field field : this.getAllFields(t.getClass())) {
 			if (Collection.class.isAssignableFrom(field.getType())) {
 				try {
@@ -281,13 +295,13 @@ public abstract class CRUDBO<E extends EntidadeBaseTemId<Id>, Id, F extends Filt
 					}
 					field.setAccessible(origem);
 				} catch (IllegalArgumentException | IllegalAccessException | SecurityException e) {
-					throw new RuntimeException(e);
+					throw new BOException(e);
 				}
 			}
 		}
 	}
 
-	protected void vinculaOneToOne(final E t) {
+	protected void vinculaOneToOne(final E t) throws BOException {
 		for (final Field field : this.getAllFields(t.getClass())) {
 			if (EntidadeBase.class.isAssignableFrom(field.getType())) {
 				try {
@@ -312,7 +326,7 @@ public abstract class CRUDBO<E extends EntidadeBaseTemId<Id>, Id, F extends Filt
 					}
 					field.setAccessible(origem);
 				} catch (IllegalArgumentException | IllegalAccessException | SecurityException e) {
-					throw new RuntimeException(e);
+					throw new BOException(e);
 				}
 			}
 		}

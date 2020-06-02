@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.frazao.lacodeamorrest.modelo.dominio.Confirmacao;
@@ -48,6 +49,7 @@ public class Usuario extends EntidadeBaseTemId<Integer> {
 	private Integer id;
 
 	@Column(name = "login")
+	@Pattern(regexp = "^[a-z0-9_.]{1,16}$")
 	private String login;
 
 	@Column(name = "perfil")
@@ -66,7 +68,7 @@ public class Usuario extends EntidadeBaseTemId<Integer> {
 	private String recuperarSenhaToken;
 
 	@JsonIgnore
-	@Column(name = "senha")
+	@Column(name = "senha", insertable = false, updatable = false)
 	private String senha;
 
 	public Usuario(final Integer id) {

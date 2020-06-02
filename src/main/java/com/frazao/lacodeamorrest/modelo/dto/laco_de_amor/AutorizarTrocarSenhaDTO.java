@@ -21,9 +21,12 @@ public class AutorizarTrocarSenhaDTO extends RecuperarSenhaDTO implements Mensag
 	@NotBlank
 	private String token;
 
-	public AutorizarTrocarSenhaDTO(final RecuperarSenhaDTO recuperarSenhaDTO, final String token) {
+	private String enderecoOrigem;
+
+	public AutorizarTrocarSenhaDTO(final RecuperarSenhaDTO recuperarSenhaDTO, final String token, final String origem) {
 		super(recuperarSenhaDTO.getEmail());
 		this.setToken(token);
+		this.setEnderecoOrigem(origem);
 	}
 
 	@Override
@@ -31,6 +34,10 @@ public class AutorizarTrocarSenhaDTO extends RecuperarSenhaDTO implements Mensag
 		final StringBuilder msg = new StringBuilder();
 		msg.append(String.format("Utilize o seguinte token para trocar a sua senha")).append("\n");
 		msg.append(String.format("Token: %s", this.getToken())).append("\n");
+		if (this.getEnderecoOrigem() != null) {			
+			msg.append(String.format("Acesse o endereço: %s/autorizar-trocar-senha/%s/%s", this.getEnderecoOrigem(),
+					this.getEmail(), this.getToken())).append("\n");
+		}
 		return msg.toString();
 	}
 
