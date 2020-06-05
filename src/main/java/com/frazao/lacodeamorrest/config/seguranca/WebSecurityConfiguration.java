@@ -20,6 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 @EnableWebSecurity
 @Configuration
+// @EnableGlobalMethodSecurity(prePostEnabled = true)
 // @Order(2)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -37,8 +38,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.anonymous().and().authorizeRequests()
-				.antMatchers("/usuario/recuperar-senha", "/usuario/autorizar-trocar-senha", "/usuario/trocar-senha")
-				.permitAll().antMatchers(HttpMethod.OPTIONS).permitAll().antMatchers("/**").authenticated().and()
+				.antMatchers(HttpMethod.POST, "/usuario/recuperar-senha", "/usuario/autorizar-trocar-senha", "/usuario/trocar-senha").permitAll()
+				.antMatchers(HttpMethod.GET, "/produto-modelo/imagem-venda").permitAll()
+				.antMatchers(HttpMethod.OPTIONS).permitAll().antMatchers("/**").authenticated().and()
 				.formLogin().loginProcessingUrl("/login.do").usernameParameter("username").passwordParameter("password")
 				.loginPage("/login").and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout.do")).and()
 				.userDetailsService(this.userDetailsServiceBean());

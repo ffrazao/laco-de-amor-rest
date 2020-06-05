@@ -24,11 +24,15 @@ public class RecursoServidor extends ResourceServerConfigurerAdapter {
 
 	@Override
 	public void configure(final HttpSecurity http) throws Exception {
-		http.anonymous().and().authorizeRequests().antMatchers("/usuario/recuperar-senha",
-				"/usuario/autorizar-trocar-senha", "/usuario/trocar-senha", "/ping").permitAll().and()
+		http.anonymous().and().authorizeRequests()
+				.antMatchers(HttpMethod.POST, "/usuario/recuperar-senha", "/usuario/autorizar-trocar-senha", "/usuario/trocar-senha", "/ping").permitAll()
+				.antMatchers(HttpMethod.GET, "/produto-modelo/imagem-venda").permitAll()
+				.antMatchers(HttpMethod.OPTIONS).permitAll().antMatchers("/**").authenticated().and()
+
 //			.requestMatchers()
 //				.antMatchers("/**").and()
-				.authorizeRequests().antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('read')")
+				.authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('read')")
 				.antMatchers(HttpMethod.POST, "/**").access("#oauth2.hasScope('write')")
 				.antMatchers(HttpMethod.PATCH, "/**").access("#oauth2.hasScope('write')")
 				.antMatchers(HttpMethod.PUT, "/**").access("#oauth2.hasScope('write')")
