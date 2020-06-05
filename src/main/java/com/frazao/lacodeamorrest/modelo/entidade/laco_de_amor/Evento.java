@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,17 +37,17 @@ public class Evento extends EntidadeBaseTemId<Integer> {
 	@Column(name = "data")
 	private LocalDateTime data;
 
-	@OneToMany(mappedBy = "evento")
+	@OneToMany(mappedBy = "evento", cascade = CascadeType.DETACH)
 	private Collection<EventoPessoa> eventoPessoaList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "evento")
+	@OneToMany(mappedBy = "evento", cascade = CascadeType.DETACH)
 	private Collection<EventoProduto> eventoProdutoList = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "evento_tipo_id")
 	private EventoTipo eventoTipo;
 
-	@OneToMany(mappedBy = "pai")
+	@OneToMany(mappedBy = "pai", cascade = CascadeType.DETACH)
 	@JsonIgnore
 	private Collection<Evento> filhoList = new ArrayList<>();
 

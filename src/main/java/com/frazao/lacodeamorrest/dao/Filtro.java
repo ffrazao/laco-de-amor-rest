@@ -1,7 +1,13 @@
 package com.frazao.lacodeamorrest.dao;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.frazao.lacodeamorrest.modelo.dto.FiltroDTO;
 
@@ -26,4 +32,23 @@ public interface Filtro<T, F extends FiltroDTO> {
 	default String like(final String arg) {
 		return arg != null ? String.format("%%%s%%", arg.replaceAll(" ", "%")) : null;
 	}
+
+	default Integer[] idSim(String[] id) {
+		List<Integer> result = new ArrayList<>();
+		if (!ObjectUtils.isEmpty(id)) {
+			result = Stream.of(id).filter(v -> v.matches("^(\\d)+$")).map(v -> NumberUtils.toInt(v))
+					.collect(Collectors.toList());
+		}
+		return (Integer[]) result.toArray(new Integer[result.size()]);
+	}
+
+	default Integer[] idNao(String[] id) {
+		List<Integer> result = new ArrayList<>();
+		if (!ObjectUtils.isEmpty(id)) {
+			result = Stream.of(id).filter(v -> v.matches("^(\\!)(\\d)+$"))
+					.map(v -> NumberUtils.toInt(v.replaceAll("\\!", ""))).collect(Collectors.toList());
+		}
+		return (Integer[]) result.toArray(new Integer[result.size()]);
+	}
+
 }

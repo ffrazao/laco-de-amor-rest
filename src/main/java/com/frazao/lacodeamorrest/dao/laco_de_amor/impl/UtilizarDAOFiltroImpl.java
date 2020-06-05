@@ -21,8 +21,7 @@ public class UtilizarDAOFiltroImpl implements UtilizarDAOFiltro {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Utilizar> filtrar(final UtilizarFiltroDTO f) {
-		Collection<Utilizar> result = (Collection<Utilizar>) this.eventoDAO.filtrar("utilizar", Utilizar.class, f)
-				.getResultList();
+		final Collection<Utilizar> result = this.eventoDAO.filtrar("utilizar", Utilizar.class, f).getResultList();
 		return result;
 	}
 

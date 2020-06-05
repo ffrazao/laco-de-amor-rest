@@ -21,8 +21,7 @@ public class ComprarDAOFiltroImpl implements ComprarDAOFiltro {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Comprar> filtrar(final ComprarFiltroDTO f) {
-		Collection<Comprar> result = (Collection<Comprar>) this.eventoDAO.filtrar("comprar", Comprar.class, f)
-				.getResultList();
+		final Collection<Comprar> result = this.eventoDAO.filtrar("comprar", Comprar.class, f).getResultList();
 		return result;
 	}
 

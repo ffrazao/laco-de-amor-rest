@@ -9,4 +9,6 @@ import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.EventoPessoaFuncao
 public interface EventoPessoaFuncaoDAO
 		extends JpaRepository<EventoPessoaFuncao, java.lang.Integer>, EventoPessoaFuncaoDAOFiltro {
 
+	EventoPessoaFuncao findByCodigo(String valor);
+
 }

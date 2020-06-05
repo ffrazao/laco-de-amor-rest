@@ -18,10 +18,10 @@ public class AutorizarTrocarSenhaDTO extends RecuperarSenhaDTO implements Mensag
 
 	private static final long serialVersionUID = 1L;
 
+	private String enderecoOrigem;
+
 	@NotBlank
 	private String token;
-
-	private String enderecoOrigem;
 
 	public AutorizarTrocarSenhaDTO(final RecuperarSenhaDTO recuperarSenhaDTO, final String token, final String origem) {
 		super(recuperarSenhaDTO.getEmail());
@@ -34,8 +34,8 @@ public class AutorizarTrocarSenhaDTO extends RecuperarSenhaDTO implements Mensag
 		final StringBuilder msg = new StringBuilder();
 		msg.append(String.format("Utilize o seguinte token para trocar a sua senha")).append("\n");
 		msg.append(String.format("Token: %s", this.getToken())).append("\n");
-		if (this.getEnderecoOrigem() != null) {			
-			msg.append(String.format("Acesse o endereço: %s/autorizar-trocar-senha/%s/%s", this.getEnderecoOrigem(),
+		if (this.getEnderecoOrigem() != null) {
+			msg.append(String.format("Acesse o endereço: %s/trocar-senha/%s/%s", this.getEnderecoOrigem(),
 					this.getEmail(), this.getToken())).append("\n");
 		}
 		return msg.toString();

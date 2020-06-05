@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.frazao.lacodeamorrest.bo.BOException;
 import com.frazao.lacodeamorrest.bo.CRUDBO;
+import com.frazao.lacodeamorrest.dao.laco_de_amor.EventoPessoaFuncaoDAO;
 import com.frazao.lacodeamorrest.dao.laco_de_amor.VenderDAO;
 import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.VenderFiltroDTO;
+import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.EventoPessoa;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Vender;
 
 @Service
@@ -17,6 +19,9 @@ public class VenderBO extends CRUDBO<Vender, Integer, VenderFiltroDTO, VenderDAO
 	@Autowired
 	private EventoBO eventoBO;
 
+	@Autowired
+	private EventoPessoaFuncaoDAO eventoPessoaFuncaoDAO;
+	
 	public VenderBO(@Autowired final VenderDAO dao) {
 		super(Vender.class, dao);
 	}
@@ -41,6 +46,9 @@ public class VenderBO extends CRUDBO<Vender, Integer, VenderFiltroDTO, VenderDAO
 	@Override
 	public Vender novo(final Vender modelo) throws BOException {
 		final Vender result = (Vender) this.eventoBO.novo(super.novo(modelo));
+		EventoPessoa ep = new EventoPessoa();
+		ep.setEventoPessoaFuncao(eventoPessoaFuncaoDAO.findByCodigo("CLIENTE"));
+		result.getEventoPessoaList().add(ep);
 		return result;
 	}
 

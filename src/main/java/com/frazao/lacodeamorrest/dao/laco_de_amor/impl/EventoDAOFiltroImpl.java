@@ -1,6 +1,8 @@
 package com.frazao.lacodeamorrest.dao.laco_de_amor.impl;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -37,13 +39,15 @@ public class EventoDAOFiltroImpl implements EventoDAOFiltro {
 
 		final StringBuilder sql = new StringBuilder();
 		sql.append("SELECT       DISTINCT em.*").append("\n");
-		if (clazz.isAssignableFrom(Vender.class)) {
+		if (!clazz.equals(Evento.class) && clazz.isAssignableFrom(Vender.class)) {
 			sql.append("             , sub.endereco_id").append("\n");
 		}
-		sql.append("FROM         ").append(databaseSchema).append(".evento as em").append("\n");
-		sql.append("INNER JOIN   ").append(databaseSchema).append(".").append(tabela).append("  as sub").append("\n");
-		sql.append("ON           em.id = sub.id").append("\n");
-
+		sql.append("FROM         ").append(this.databaseSchema).append(".evento as em").append("\n");
+		if (!clazz.equals(Evento.class)) {
+			sql.append("INNER JOIN   ").append(this.databaseSchema).append(".").append(tabela).append("  as sub")
+					.append("\n");
+			sql.append("ON           em.id = sub.id").append("\n");
+		}
 		if (StringUtils.isNotBlank(f.getProduto())) {
 			sql.append("LEFT JOIN    laco_de_amor.evento_produto as epr").append("\n");
 			sql.append("ON           epr.evento_id = em.id").append("\n");
@@ -61,28 +65,48 @@ public class EventoDAOFiltroImpl implements EventoDAOFiltro {
 		}
 
 		final StringBuilder arg = new StringBuilder();
+		Integer[] idSim = {};
+		Integer[] idNao = {};
+		if (ObjectUtils.isNotEmpty(f.getId())) {
+			idSim = this.idSim(f.getId());
+			if (ObjectUtils.isNotEmpty(idSim)) {
+				arg.append(this.adWhere(arg)).append("em.id in :idSim").append("\n");
+			}
+			idNao = this.idNao(f.getId());
+			if (ObjectUtils.isNotEmpty(idNao)) {
+				arg.append(this.adWhere(arg)).append("em.id not in :idNao").append("\n");
+			}
+		}
 		if (ObjectUtils.isNotEmpty(f.getDataInicio())) {
-			arg.append(adWhere(arg)).append("em.data >= :dataInicio").append("\n");
+			arg.append(this.adWhere(arg)).append("em.data >= :dataInicio").append("\n");
 		}
 		if (ObjectUtils.isNotEmpty(f.getDataTermino())) {
-			arg.append(adWhere(arg)).append("em.data <= :dataTermino").append("\n");
+			arg.append(this.adWhere(arg)).append("em.data <= :dataTermino").append("\n");
 		}
 		if (StringUtils.isNotBlank(f.getProduto())) {
-			arg.append(adWhere(arg)).append("(prm.codigo like :produto or prm.nome like :produto)").append("\n");
+			arg.append(this.adWhere(arg)).append("(prm.codigo like :produto or prm.nome like :produto)").append("\n");
 		}
 		if (StringUtils.isNotBlank(f.getParticipante())) {
-			arg.append(adWhere(arg)).append("(pe.cpf_cnpj like :participante or pe.nome like :participante)")
+			arg.append(this.adWhere(arg)).append("(pe.cpf_cnpj like :participante or pe.nome like :participante)")
 					.append("\n");
 		}
 		if (Confirmacao.S.equals(f.getUtilizado())) {
-			arg.append(adWhere(arg)).append("em.id in (select pai_id from evento where pai_id is not null)").append("\n");
+			arg.append(this.adWhere(arg)).append("em.id in (select pai_id from evento where pai_id is not null)")
+					.append("\n");
 		} else if (Confirmacao.N.equals(f.getUtilizado())) {
-			arg.append(adWhere(arg)).append("em.id not in (select pai_id from evento where pai_id is not null)").append("\n");
+			arg.append(this.adWhere(arg)).append("em.id not in (select pai_id from evento where pai_id is not null)")
+					.append("\n");
 		}
 
 		sql.append(arg);
 		sql.append("ORDER BY em.data DESC").append("\n");
 		final Query query = this.entityManager.createNativeQuery(sql.toString(), clazz);
+		if (ObjectUtils.isNotEmpty(idSim)) {
+			query.setParameter("idSim", new HashSet<>(Arrays.asList(idSim)));
+		}
+		if (ObjectUtils.isNotEmpty(idNao)) {
+			query.setParameter("idNao", new HashSet<>(Arrays.asList(idNao)));
+		}
 		if (ObjectUtils.isNotEmpty(f.getDataInicio())) {
 			query.setParameter("dataInicio", f.getDataInicio());
 		}
@@ -90,10 +114,10 @@ public class EventoDAOFiltroImpl implements EventoDAOFiltro {
 			query.setParameter("dataTermino", f.getDataTermino());
 		}
 		if (StringUtils.isNotBlank(f.getProduto())) {
-			query.setParameter("produto", like(f.getProduto()));
+			query.setParameter("produto", this.like(f.getProduto()));
 		}
 		if (StringUtils.isNotBlank(f.getParticipante())) {
-			query.setParameter("participante", like(f.getParticipante()));
+			query.setParameter("participante", this.like(f.getParticipante()));
 		}
 
 		return query;

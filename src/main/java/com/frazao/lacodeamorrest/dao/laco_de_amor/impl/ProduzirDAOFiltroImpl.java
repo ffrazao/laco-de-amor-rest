@@ -21,8 +21,7 @@ public class ProduzirDAOFiltroImpl implements ProduzirDAOFiltro {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Produzir> filtrar(final ProduzirFiltroDTO f) {
-		Collection<Produzir> result = (Collection<Produzir>) this.eventoDAO.filtrar("produzir", Produzir.class, f)
-				.getResultList();
+		final Collection<Produzir> result = this.eventoDAO.filtrar("produzir", Produzir.class, f).getResultList();
 		return result;
 	}
 

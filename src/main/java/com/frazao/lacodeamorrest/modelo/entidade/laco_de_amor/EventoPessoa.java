@@ -3,6 +3,7 @@ package com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,7 +39,7 @@ public class EventoPessoa extends EntidadeBaseTemId<Integer> {
 	@JoinColumn(name = "evento_pessoa_funcao_id")
 	private EventoPessoaFuncao eventoPessoaFuncao;
 
-	@OneToMany(mappedBy = "eventoPessoa")
+	@OneToMany(mappedBy = "eventoPessoa", cascade = CascadeType.DETACH)
 	private Collection<EventoProduto> eventoProdutoList = new ArrayList<>();
 
 	@Id

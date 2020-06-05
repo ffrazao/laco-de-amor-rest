@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class VenderFiltroDTO  extends EventoFiltroDTO {
+public class VenderFiltroDTO extends EventoFiltroDTO {
 
 	private static final long serialVersionUID = 1L;
 

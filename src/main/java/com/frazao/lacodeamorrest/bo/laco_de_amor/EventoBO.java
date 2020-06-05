@@ -1,5 +1,6 @@
 package com.frazao.lacodeamorrest.bo.laco_de_amor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -20,7 +23,9 @@ import com.frazao.lacodeamorrest.bo.BOException;
 import com.frazao.lacodeamorrest.bo.CRUDBO;
 import com.frazao.lacodeamorrest.dao.laco_de_amor.EventoDAO;
 import com.frazao.lacodeamorrest.dao.laco_de_amor.EventoTipoDAO;
+import com.frazao.lacodeamorrest.modelo.dominio.laco_de_amor.ProdutoPrecoDestinacao;
 import com.frazao.lacodeamorrest.modelo.dto.laco_de_amor.EventoFiltroDTO;
+import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Cotar;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Evento;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.EventoPessoa;
 import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.EventoPessoaFuncao;
@@ -38,6 +43,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class EventoBO extends CRUDBO<Evento, java.lang.Integer, EventoFiltroDTO, EventoDAO> {
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Autowired
 	private EventoPessoaBO eventoPessoaBO;
@@ -57,44 +65,74 @@ public class EventoBO extends CRUDBO<Evento, java.lang.Integer, EventoFiltroDTO,
 
 	@Override
 	public Evento entrando(@Valid final Evento t, @Valid final Evento anterior, final String acao) throws BOException {
+
 		if (ObjectUtils.isEmpty(t.getEventoProdutoList())) {
 			throw new BOException("Necessário informar produto(s)");
 		}
-		if (t.getEventoPessoaList() == null) {
+		if (ObjectUtils.isEmpty(t.getEventoPessoaList())) {
 			t.setEventoPessoaList(new ArrayList<>());
 		}
 
-		// unificar os produtos atraves do id do modelo do produto
+		//////////////////
+		// PRODUTO LIST //
+		//////////////////
+
 		final Map<Integer, Produto> pmSet = new HashMap<>();
 		for (final EventoProduto ep : t.getEventoProdutoList()) {
+			// o produto tem que ser informado com o seu modelo
 			if (!ObjectUtils.allNotNull(ep.getProduto(), ep.getProduto().getProdutoModelo(),
 					ep.getProduto().getProdutoModelo().getId())) {
-				throw new BOException("Dados inconsistentes");
+				throw new BOException("Dados inconsistentes - informação de produto incompleta");
 			}
+			// verificar se está repetido
 			if (pmSet.keySet().contains(ep.getProduto().getProdutoModelo().getId())) {
-//				throw new BOException(String.format("Mesmo modelo de produto informado mais de uma vez! [%s]",
-//						ep.getProduto().getProdutoModelo().getCodigo()));
-			}
-			pmSet.put(ep.getProduto().getProdutoModelo().getId(), ep.getProduto());
-
-			if (ObjectUtils.isNotEmpty(ep.getEventoPessoa())) {
-				// ep.getEventoPessoa().setEventoProdutoList(new ArrayList<>());
-				boolean encontrou = false;
-				for (final EventoPessoa eventoPessoa : t.getEventoPessoaList()) {
-					if (eventoPessoa.getPessoa().getId() == ep.getEventoPessoa().getPessoa().getId()) {
-						encontrou = true;
-						break;
-					}
+				if (t instanceof Cotar) {
+					throw new BOException(String.format("Mesmo modelo de produto informado mais de uma vez! [%s]",
+							ep.getProduto().getProdutoModelo().getCodigo()));
 				}
-				if (!encontrou) {
-					final EventoPessoa epes = new EventoPessoa();
-					epes.setEventoPessoaFuncao(ep.getEventoPessoa().getEventoPessoaFuncao());
-					epes.setPessoa(ep.getEventoPessoa().getPessoa());
-					t.getEventoPessoaList().add(epes);
+				ep.setProduto(pmSet.get(ep.getProduto().getProdutoModelo().getId()));
+			} else {
+				pmSet.put(ep.getProduto().getProdutoModelo().getId(), ep.getProduto());
+			}
+
+			// pessoa vinculada ao produto
+			if (ObjectUtils.isNotEmpty(ep.getEventoPessoa())) {
+				if (t instanceof Cotar) {
+					throw new BOException(String.format(
+							"Composição de dados inválida! Informado Pessoa sem necessidade", ep.getEventoPessoa()));
+				} else {
+					if (!ObjectUtils.allNotNull(ep.getEventoPessoa().getPessoa(),
+							ep.getEventoPessoa().getPessoa().getId())) {
+						throw new BOException(
+								String.format("Composição de dados inválida! Informação sobre a pessoa incompleta",
+										ep.getEventoPessoa()));
+					}
+					if (!ObjectUtils.allNotNull(ep.getEventoPessoa().getEventoPessoaFuncao(),
+							ep.getEventoPessoa().getEventoPessoaFuncao().getId())) {
+						throw new BOException("Dados inconsistentes - função da pessoa incompleto");
+					}
+					if (!ObjectUtils.allNotNull(ep.getEventoPessoa().getEventoProdutoList())) {
+						throw new BOException("Dados inconsistentes - relacao de produtos invalida");
+					}
+					boolean encontrou = false;
+					for (final EventoPessoa eventoPessoa : t.getEventoPessoaList()) {
+						if (eventoPessoa.getPessoa().getId().equals(ep.getEventoPessoa().getPessoa().getId())) {
+							encontrou = true;
+							break;
+						}
+					}
+					if (!encontrou) {
+						final EventoPessoa epes = new EventoPessoa();
+						epes.setEventoPessoaFuncao(ep.getEventoPessoa().getEventoPessoaFuncao());
+						epes.setPessoa(ep.getEventoPessoa().getPessoa());
+						t.getEventoPessoaList().add(epes);
+					}
+					ep.getEventoPessoa().setEvento(null);
 				}
 			}
 			// atribuir o link ao evento
 			ep.setEvento(t);
+			// calcular valor total
 			if (ObjectUtils.allNotNull(ep.getQuantidade(), ep.getValorUnitario())) {
 				ep.setValorTotal(ep.getQuantidade().multiply(ep.getValorUnitario()));
 			} else {
@@ -102,48 +140,68 @@ public class EventoBO extends CRUDBO<Evento, java.lang.Integer, EventoFiltroDTO,
 			}
 		}
 
+		/////////////////
+		// PESSOA LIST //
+		/////////////////
+
 		final Set<Integer> excluiSet = new HashSet<>();
 		final Set<Integer> peSet = new HashSet<>();
 		if (t.getEventoPessoaList().size() > 0) {
 			for (final EventoPessoa ep : t.getEventoPessoaList()) {
+				// validar pessoa
 				if (!ObjectUtils.allNotNull(ep.getPessoa(), ep.getPessoa().getId())) {
-					throw new BOException("Dados inconsistentes");
+					throw new BOException("Dados inconsistentes - pessoa inválida");
+				}
+				if (!ObjectUtils.allNotNull(ep.getEventoPessoaFuncao(), ep.getEventoPessoaFuncao().getId())) {
+					throw new BOException("Dados inconsistentes - função da pessoa incompleto");
 				}
 				if (peSet.contains(ep.getPessoa().getId())) {
 					throw new BOException(
 							String.format("Mesmo pessoa informada mais de uma vez! [%s]", ep.getPessoa().getNome()));
+				} else {
+					peSet.add(ep.getPessoa().getId());
 				}
-				peSet.add(ep.getPessoa().getId());
 				boolean encontrou = false;
 				for (final EventoProduto eprod : t.getEventoProdutoList()) {
 					if (eprod.getEventoPessoa() != null
-							&& ep.getPessoa().getId() == eprod.getEventoPessoa().getPessoa().getId()) {
+							&& eprod.getEventoPessoa().getPessoa().getId().equals(ep.getPessoa().getId())) {
 						encontrou = true;
 						break;
 					}
 				}
 				if (!encontrou) {
-					excluiSet.add(ep.getId());
-					continue;
+					if (!(t instanceof Cotar) && !(t instanceof Vender)) {
+						excluiSet.add(ep.getId());
+						continue;
+					}
 				}
-
-				for (final EventoProduto epp : ep.getEventoProdutoList()) {
-					if (!ObjectUtils.allNotNull(epp.getProduto(), epp.getProduto().getProdutoModelo(),
-							epp.getProduto().getProdutoModelo().getId())) {
-						throw new BOException("Dados inconsistentes");
-					}
-					if (!pmSet.keySet().contains(epp.getProduto().getProdutoModelo().getId())) {
-						throw new BOException("Modelo de produto não relacionado!");
-					}
-					if (ObjectUtils.isNotEmpty(epp.getEvento())) {
-						throw new BOException("Dados inconsistentes");
-					}
-					epp.setEventoPessoa(ep);
-					epp.setProduto(pmSet.get(epp.getProduto().getProdutoModelo().getId()));
-					if (ObjectUtils.allNotNull(epp.getQuantidade(), epp.getValorUnitario())) {
-						epp.setValorTotal(epp.getQuantidade().multiply(epp.getValorUnitario()));
-					} else {
-						epp.setValorTotal(null);
+				if (ObjectUtils.isNotEmpty(ep.getEventoProdutoList())) {
+					for (final EventoProduto epp : ep.getEventoProdutoList()) {
+						if (!ObjectUtils.allNotNull(epp.getProduto(), epp.getProduto().getProdutoModelo(),
+								epp.getProduto().getProdutoModelo().getId())) {
+							throw new BOException(
+									"Dados inconsistentes - informação de produto vinculado a pessoa incompleto");
+						}
+						if (!pmSet.keySet().contains(epp.getProduto().getProdutoModelo().getId())) {
+							if (!(t instanceof Cotar)) {
+								throw new BOException("Modelo de produto não relacionado!");
+							}
+						}
+						if (ObjectUtils.isNotEmpty(epp.getEvento())) {
+							throw new BOException("Dados inconsistentes");
+						}
+						epp.setEvento(null);
+						epp.setEventoPessoa(ep);
+						epp.setProduto(pmSet.get(epp.getProduto().getProdutoModelo().getId()));
+						if (ObjectUtils.isEmpty(epp.getProduto())) {
+							throw new BOException("Dados inconsistentes - produto");
+						}
+						// calcular valor total
+						if (ObjectUtils.allNotNull(epp.getQuantidade(), epp.getValorUnitario())) {
+							epp.setValorTotal(epp.getQuantidade().multiply(epp.getValorUnitario()));
+						} else {
+							epp.setValorTotal(null);
+						}
 					}
 				}
 
@@ -165,7 +223,7 @@ public class EventoBO extends CRUDBO<Evento, java.lang.Integer, EventoFiltroDTO,
 		for (final Produto prd : pmSet.values()) {
 			if (prd.getId() == null) {
 				EventoBO.log.debug("Criando novo produto - modelo = {}", prd.getProdutoModelo());
-				Integer id = this.produtoBO.create(prd);
+				final Integer id = this.produtoBO.create(prd);
 				prd.setId(id);
 			}
 		}
@@ -191,6 +249,7 @@ public class EventoBO extends CRUDBO<Evento, java.lang.Integer, EventoFiltroDTO,
 
 	@Override
 	public Evento entrou(@Valid final Evento t, final String acao) throws BOException {
+		this.entityManager.detach(t);
 
 		this.salvarEventoPessoa(t.getEventoPessoaList());
 		this.salvarEventoProduto(t.getEventoProdutoList());
@@ -285,6 +344,19 @@ public class EventoBO extends CRUDBO<Evento, java.lang.Integer, EventoFiltroDTO,
 		pm.setCodigo(produto.getProdutoModelo().getCodigo());
 		pm.setNome(produto.getProdutoModelo().getNome());
 		pm.setFoto(produto.getProdutoModelo().getFoto());
+		produto.getProdutoModelo().getProdutoDescricaoList().stream()
+				.sorted((a, b) -> a.getOrdem().compareTo(b.getOrdem()))
+				.forEach(v -> pm.getProdutoDescricaoList().add(v));
+		produto.getProdutoModelo().getProdutoPrecoList().stream()
+				.sorted((a, b) -> b.getVigencia().compareTo(a.getVigencia()))
+				.filter(v -> ProdutoPrecoDestinacao.Compra.equals(v.getDestinacao())
+						&& (v.getVigencia().equals(LocalDate.now()) || v.getVigencia().isBefore(LocalDate.now())))
+				.findFirst().ifPresent(v -> pm.getProdutoPrecoList().add(v));
+		produto.getProdutoModelo().getProdutoPrecoList().stream()
+				.sorted((a, b) -> b.getVigencia().compareTo(a.getVigencia()))
+				.filter(v -> ProdutoPrecoDestinacao.Venda.equals(v.getDestinacao())
+						&& (v.getVigencia().equals(LocalDate.now()) || v.getVigencia().isBefore(LocalDate.now())))
+				.findFirst().ifPresent(v -> pm.getProdutoPrecoList().add(v));
 		result.setProdutoModelo(pm);
 		return result;
 	}
@@ -322,12 +394,14 @@ public class EventoBO extends CRUDBO<Evento, java.lang.Integer, EventoFiltroDTO,
 
 	private void salvarEventoPessoa(final Collection<EventoPessoa> lista) throws BOException {
 		if (lista != null) {
-			for (final EventoPessoa pe : lista) {
+			for (int i = 0; i < lista.size(); i++) {
+				final EventoPessoa pe = ((List<EventoPessoa>) lista).get(i);
 				if (pe.getId() == null) {
 					this.eventoPessoaBO.create(pe);
 				} else {
 					this.eventoPessoaBO.update(pe.getId(), pe);
 				}
+				entityManager.detach(pe);
 				this.salvarEventoProduto(pe.getEventoProdutoList());
 			}
 		}
@@ -335,7 +409,8 @@ public class EventoBO extends CRUDBO<Evento, java.lang.Integer, EventoFiltroDTO,
 
 	private void salvarEventoProduto(final Collection<EventoProduto> lista) throws BOException {
 		if (lista != null) {
-			for (final EventoProduto pe : lista) {
+			for (int i = 0; i < lista.size(); i++) {
+				final EventoProduto pe = ((List<EventoProduto>) lista).get(i);
 				if (pe.getEventoPessoa() != null) {
 					if (pe.getEventoPessoa().getId() == null) {
 						this.eventoPessoaBO.create(pe.getEventoPessoa());

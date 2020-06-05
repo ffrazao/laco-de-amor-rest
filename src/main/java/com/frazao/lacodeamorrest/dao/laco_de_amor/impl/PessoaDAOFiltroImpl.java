@@ -1,6 +1,8 @@
 package com.frazao.lacodeamorrest.dao.laco_de_amor.impl;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -18,37 +20,48 @@ import com.frazao.lacodeamorrest.modelo.entidade.laco_de_amor.Pessoa;
 
 public class PessoaDAOFiltroImpl implements PessoaDAOFiltro {
 
-	@PersistenceContext
-	private EntityManager entityManager;
-
 	@Value("${default.database_schema}")
 	private String databaseSchema;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Pessoa> filtrar(final PessoaFiltroDTO f) {
 		final StringBuilder sql = new StringBuilder();
 		sql.append("SELECT em.*").append("\n");
-		sql.append("FROM   ").append(databaseSchema).append(".pessoa as em").append("\n");
+		sql.append("FROM   ").append(this.databaseSchema).append(".pessoa as em").append("\n");
 
 		if (ObjectUtils.isNotEmpty(f.getPessoaVinculoTipo())
 				&& f.getPessoaVinculoTipo().size() != PessoaVinculoTipo.values().length) {
 			if (f.getPessoaVinculoTipo().contains(PessoaVinculoTipo.CLIENTE)) {
-				sql.append("LEFT JOIN ").append(databaseSchema).append(".cliente as cli").append("\n");
+				sql.append("LEFT JOIN ").append(this.databaseSchema).append(".cliente as cli").append("\n");
 				sql.append("ON        cli.id = em.id").append("\n");
 			}
 			if (f.getPessoaVinculoTipo().contains(PessoaVinculoTipo.FORNECEDOR)) {
-				sql.append("LEFT JOIN ").append(databaseSchema).append(".fornecedor as frn").append("\n");
+				sql.append("LEFT JOIN ").append(this.databaseSchema).append(".fornecedor as frn").append("\n");
 				sql.append("ON        frn.id = em.id").append("\n");
 			}
 			if (f.getPessoaVinculoTipo().contains(PessoaVinculoTipo.PARCEIRO)) {
-				sql.append("LEFT JOIN ").append(databaseSchema).append(".parceiro as par").append("\n");
+				sql.append("LEFT JOIN ").append(this.databaseSchema).append(".parceiro as par").append("\n");
 				sql.append("ON        par.id = em.id").append("\n");
 			}
 		}
 
 		final StringBuilder arg = new StringBuilder();
-
+		Integer[] idSim = {};
+		Integer[] idNao = {};
+		if (ObjectUtils.isNotEmpty(f.getId())) {
+			idSim = this.idSim(f.getId());
+			if (ObjectUtils.isNotEmpty(idSim)) {
+				arg.append(this.adWhere(arg)).append("em.id in :idSim").append("\n");
+			}
+			idNao = this.idNao(f.getId());
+			if (ObjectUtils.isNotEmpty(idNao)) {
+				arg.append(this.adWhere(arg)).append("em.id not in :idNao").append("\n");
+			}
+		}
 		// condicao ou
 		final StringBuilder arg1 = new StringBuilder();
 		if (StringUtils.isNotBlank(f.getNome())) {
@@ -58,7 +71,7 @@ public class PessoaDAOFiltroImpl implements PessoaDAOFiltro {
 			arg1.append(this.adOr(arg1)).append("(em.cpf_cnpj = :cpfCnpj)").append("\n");
 		}
 		if (arg1.length() > 0) {
-			arg.append(adWhere(arg)).append("(").append(arg1).append(")").append("\n");
+			arg.append(this.adWhere(arg)).append("(").append(arg1).append(")").append("\n");
 		}
 
 		if (ObjectUtils.isNotEmpty(f.getPessoaTipo())) {
@@ -78,7 +91,7 @@ public class PessoaDAOFiltroImpl implements PessoaDAOFiltro {
 				arg2.append(this.adOr(arg2)).append("(par.id is not null)").append("\n");
 			}
 			if (arg2.length() > 0) {
-				arg.append(adWhere(arg)).append("(").append(arg2).append(")").append("\n");
+				arg.append(this.adWhere(arg)).append("(").append(arg2).append(")").append("\n");
 			}
 		}
 		sql.append(arg);
@@ -87,6 +100,12 @@ public class PessoaDAOFiltroImpl implements PessoaDAOFiltro {
 
 		final Query query = this.entityManager.createNativeQuery(sql.toString(), Pessoa.class);
 
+		if (ObjectUtils.isNotEmpty(idSim)) {
+			query.setParameter("idSim", new HashSet<>(Arrays.asList(idSim)));
+		}
+		if (ObjectUtils.isNotEmpty(idNao)) {
+			query.setParameter("idNao", new HashSet<>(Arrays.asList(idNao)));
+		}
 		if (StringUtils.isNotBlank(f.getNome())) {
 			query.setParameter("nome", this.like(f.getNome()));
 		}

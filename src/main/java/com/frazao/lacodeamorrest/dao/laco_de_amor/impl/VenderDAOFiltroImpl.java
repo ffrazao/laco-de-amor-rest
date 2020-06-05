@@ -21,8 +21,7 @@ public class VenderDAOFiltroImpl implements VenderDAOFiltro {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Vender> filtrar(final VenderFiltroDTO f) {
-		Collection<Vender> result = (Collection<Vender>) this.eventoDAO.filtrar("vender", Vender.class, f)
-				.getResultList();
+		final Collection<Vender> result = this.eventoDAO.filtrar("vender", Vender.class, f).getResultList();
 		return result;
 	}
 

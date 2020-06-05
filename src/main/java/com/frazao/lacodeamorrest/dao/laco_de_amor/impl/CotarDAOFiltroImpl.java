@@ -14,14 +14,14 @@ public class CotarDAOFiltroImpl implements CotarDAOFiltro {
 
 	@Value("${default.database_schema}")
 	private String databaseSchema;
-	
+
 	@Autowired
 	private EventoDAO eventoDAO;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Cotar> filtrar(final CotarFiltroDTO f) {
-		Collection<Cotar> result = (Collection<Cotar>) this.eventoDAO.filtrar("cotar", Cotar.class, f).getResultList();
+		final Collection<Cotar> result = this.eventoDAO.filtrar("cotar", Cotar.class, f).getResultList();
 		return result;
 	}
 
