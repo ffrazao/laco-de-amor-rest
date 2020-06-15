@@ -4,6 +4,7 @@ spring:
     url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_a227050770a6656?reconnect=true
     username: b32418a40fbb7d
     password: 51216ff286bc297
+    
 # E-MAIL
   mail:
     host: smtp.gmail.com
