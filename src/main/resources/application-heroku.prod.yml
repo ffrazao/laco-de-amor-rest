@@ -1,9 +1,9 @@
 spring:
 # BANCO DE DADOS
   datasource:
-    url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_a227050770a6656?reconnect=true
-    username: b32418a40fbb7d
-    password: 51216ff286bc297
+    url: jdbc:mysql://us-cdbr-east-05.cleardb.net/heroku_bf020d447210756?reconnect=true
+    username: b11ee375415047
+    password: 6c740be9
     
 # E-MAIL
   mail:
@@ -40,7 +40,7 @@ logging:
 # VALORES PADRAO
 default:
 # BANCO DE DADOS
-  database_schema: heroku_a227050770a6656
+  database_schema: heroku_bf020d447210756
 # E-MAIL
   sender: lacodeamordf@gmail.com
   recipient: lacodeamordf@gmail.com
