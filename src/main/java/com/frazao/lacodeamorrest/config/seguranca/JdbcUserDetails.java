@@ -25,7 +25,7 @@ public class JdbcUserDetails implements UserDetailsService {
 
 	public static void main(final String[] args) {
 		final BCryptPasswordEncoder e = new BCryptPasswordEncoder(4);
-		System.out.println(e.encode(new String("laco-de-amor")));
+		System.out.println(e.encode(new String("adubacaodescomplicada")));
 		System.out.println(e.encode(new String("a")));
 	}
 

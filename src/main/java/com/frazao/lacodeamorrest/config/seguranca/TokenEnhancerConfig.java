@@ -37,14 +37,14 @@ public class TokenEnhancerConfig implements TokenEnhancer {
 			details = (Map<String, Object>) userDetails;
 		}
 
-		final Usuario usuario = this.bo.findByLogin(authentication.getUserAuthentication().getName());
-
-		details.put("nome", usuario.getPessoa().isPresent() ? usuario.getPessoa().get().getNome() : usuario.getLogin());
-		details.put("foto", usuario.getFoto());
-		details.put("email", usuario.getEmail());
-		details.put("perfil", usuario.getPerfil());
-
-		tempResult.setAdditionalInformation(details);
+		if (authentication.getUserAuthentication() != null) {			
+			final Usuario usuario = this.bo.findByLogin(authentication.getUserAuthentication().getName());
+			details.put("nome", usuario.getPessoa().isPresent() ? usuario.getPessoa().get().getNome() : usuario.getLogin());
+			details.put("foto", usuario.getFoto());
+			details.put("email", usuario.getEmail());
+			details.put("perfil", usuario.getPerfil());
+			tempResult.setAdditionalInformation(details);
+		}
 
 		return tempResult;
 	}
